@@ -25,6 +25,11 @@ class RedirectIfAuthenticated
             }
         }
 
+        if (!Auth::check()) {
+            // Jika pengguna tidak login, redirect ke halaman login
+            return redirect('/login');
+        }
+
         return $next($request);
     }
 }

@@ -1,0 +1,23 @@
+<nav class="navbar navbar-expand-md navbar-dark bg-secondary shadow">
+    <div class="container">
+        <a class="navbar-brand h1" href="">
+        <i class="fas fa-images"></i>  &nbsp; Galeri Foto
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            @if(Auth::check())
+
+            @else
+            <x-nav-item label="Login" :link="route('login.show')" />
+            <form class="form-inline">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
+            </form>
+            @endif
+        </ul>
+        </div>
+    </div>
+</nav>
