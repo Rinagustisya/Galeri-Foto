@@ -25,11 +25,10 @@ class RedirectIfAuthenticated
             }
         }
 
-        if (!Auth::check()) {
-            // Jika pengguna tidak login, redirect ke halaman login
-            return redirect('/login');
+        if (Auth::guest()) {
+            // Jika tamu, lanjutkan ke rute yang diminta
+            return $next($request);
         }
 
-        return $next($request);
     }
 }

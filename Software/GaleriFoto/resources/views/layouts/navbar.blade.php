@@ -8,15 +8,18 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
-            @if(Auth::check())
-
+            @auth
+            <!-- <x-nav-item label="Dashboard" :link="route('login.show')" />
+            <x-nav-item label="Profile" :link="route('login.show')" />
+            <x-nav-item label="Data Gambar" :link="route('login.show')" />
+            <x-nav-item label="Logout" :link="route('login.show')" />   -->
             @else
             <x-nav-item label="Login" :link="route('login.show')" />
             <form class="form-inline">
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
             </form>
-            @endif
+            @endauth
         </ul>
         </div>
     </div>

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\LoginController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,7 +17,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::group(['middleware' => 'auth.check'], function () {
+Route::group(['middleware' => 'guest'], function () {
      /**
          * Register Routes
          */
@@ -27,6 +27,6 @@ Route::group(['middleware' => 'auth.check'], function () {
         /**
          * Login Routes
          */
-        Route::get('/login', 'LoginController@show')->name('login.show');
+        Route::get('/login', 'LoginController@index')->name('login.show');
         Route::post('/login', 'LoginController@login')->name('login.perform');
 });
