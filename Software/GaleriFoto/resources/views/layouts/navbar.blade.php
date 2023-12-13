@@ -15,10 +15,6 @@
             <x-nav-item label="Logout" :link="route('login.show')" />   -->
             @else
             <x-nav-item label="Login" :link="route('login.show')" />
-            <form class="form-inline">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
-            </form>
             @endauth
         </ul>
         </div>

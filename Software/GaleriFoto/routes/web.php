@@ -15,7 +15,7 @@ use App\Http\Controllers\LoginController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 Route::group(['middleware' => 'guest'], function () {
      /**
