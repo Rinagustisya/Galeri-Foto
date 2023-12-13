@@ -1,5 +1,9 @@
 /* Sticky footer styles
 -------------------------------------------------- */
+.jumbotron {
+  padding-top: 5rem;
+}
+
 html {
   position: relative;
   min-height: 100%;
