@@ -4,6 +4,22 @@
   padding-top: 5rem;
 }
 
+.col-2 {
+  text-align: center;
+}
+
+.col-2 button {
+  margin-bottom: 10px; /* Adjust the margin as needed */
+}
+
+.label {
+  display: block;
+}
+
+.first-row {
+  margin-bottom: 20px; /* Adjust the margin as needed */
+}
+
 html {
   position: relative;
   min-height: 100%;
