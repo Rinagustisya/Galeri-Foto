@@ -28,8 +28,8 @@ class RegisterController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate the form data
-        $request->validate([
+         // Validate the form data
+         $request->validate([
             'nama_lengkap' => 'required|string',
             'username' => 'required|string|unique:users',
             'alamat' => 'required|string',
@@ -46,11 +46,11 @@ class RegisterController extends Controller
             'password' => bcrypt($request->input('password')),
         ]);
 
-        // Log in the newly registered user
+        // Log in the newly registered user (optional)
         auth()->login($user);
 
-        // Redirect to the intended page after successful registration
-        return redirect()->route('login.show');
+        // Redirect to the login page after successful registration
+        return redirect()->route('login.show')->with('success', 'Registration successful. Please log in.');
     }
 
     /**

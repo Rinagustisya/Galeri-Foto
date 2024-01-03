@@ -65,14 +65,6 @@
             </div>
           </div>
         </div>
-        <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Konfirmasi Password" name="password_confirmation">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
-            </div>
-          </div>
-        </div>
         <button type="submit" class="btn btn-primary btn-block">
                 <i class="fas fa-sign-in-alt"></i>  Register
             </button>
