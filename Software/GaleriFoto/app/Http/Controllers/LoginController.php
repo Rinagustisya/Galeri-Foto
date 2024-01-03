@@ -38,7 +38,7 @@ class LoginController extends Controller
         $credentials = $request->only('username', 'password');
         if (auth()->attempt($credentials)) {
             // Authentication passed...
-            return redirect()->route('home'); // Redirect to the intended page after successful login
+            return redirect()->route('dashboard'); // Redirect to the intended page after successful login
         }
 
         // Authentication failed...
@@ -46,6 +46,13 @@ class LoginController extends Controller
             ->withErrors(['loginError' => 'Invalid credentials. Please try again.']);
     }
 
+
+    public function logout()
+    {
+        Auth::logout();
+
+        return redirect()->route('home'); // Redirect to the home route after logout
+    }
     /**
      * Display the specified resource.
      */

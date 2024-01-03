@@ -30,4 +30,15 @@ Route::group(['middleware' => 'guest'], function () {
          */
         Route::get('/login', [LoginController::class, 'index'])->name('login.show');
         Route::post('/login', [LoginController::class, 'store'])->name('login.perform');
+
+        /**
+         * Logout
+         */
+        Route::match(['get', 'post'], '/logout', 'LoginController@logout')->name('logout');
+
+
+        /**
+         * Dashboard
+         */
+        Route::view('/dashboard', 'dashboard')->name('dashboard');
 });
