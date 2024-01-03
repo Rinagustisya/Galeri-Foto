@@ -30,5 +30,7 @@ class RedirectIfAuthenticated
             return $next($request);
         }
 
+        return redirect()->route('home');
+
     }
 }

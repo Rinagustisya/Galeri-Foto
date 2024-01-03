@@ -18,6 +18,9 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
+Route::view('/dashboard', 'dashboard')->name('dashboard');
+
+
 Route::group(['middleware' => 'guest'], function () {
      /**
          * Register Routes
@@ -36,9 +39,4 @@ Route::group(['middleware' => 'guest'], function () {
          */
         Route::match(['get', 'post'], '/logout', 'LoginController@logout')->name('logout');
 
-
-        /**
-         * Dashboard
-         */
-        Route::view('/dashboard', 'dashboard')->name('dashboard');
 });
