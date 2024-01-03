@@ -24,7 +24,8 @@
     <div class="card-body">
       <p class="login-box-msg">Sign in to start your session</p>
 
-      <form action="/adminlte/index3.html" method="post">
+      <form action="{{ route('login.perform') }}" method="post">
+      @csrf
       <div class="input-group mb-3">
           <input type="text" class="form-control" placeholder="Username" name="username">
           <div class="input-group-append">

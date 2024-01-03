@@ -28,7 +28,22 @@ class LoginController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         // Validate the form data
+         $request->validate([
+            'username' => 'required|string',
+            'password' => 'required|string',
+        ]);
+
+        // Attempt to log in the user
+        $credentials = $request->only('username', 'password');
+        if (auth()->attempt($credentials)) {
+            // Authentication passed...
+            return redirect()->route('home'); // Redirect to the intended page after successful login
+        }
+
+        // Authentication failed...
+        return redirect()->back()->withInput($request->only('username'))
+            ->withErrors(['loginError' => 'Invalid credentials. Please try again.']);
     }
 
     /**

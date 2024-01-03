@@ -23,11 +23,11 @@ Route::group(['middleware' => 'guest'], function () {
          * Register Routes
          */
         Route::get('/register', [RegisterController::class, 'index'])->name('register.show');
-        Route::post('/register', 'RegisterController@register')->name('register.perform');
+        Route::post('/register', [RegisterController::class, 'store'])->name('register.perform');
 
         /**
          * Login Routes
          */
         Route::get('/login', [LoginController::class, 'index'])->name('login.show');
-        Route::post('/login', 'LoginController@login')->name('login.perform');
+        Route::post('/login', [LoginController::class, 'store'])->name('login.perform');
 });
