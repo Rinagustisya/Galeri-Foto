@@ -34,7 +34,7 @@ class RegisterController extends Controller
             'username' => 'required|string|unique:users',
             'alamat' => 'required|string',
             'email' => 'required|email|unique:users',
-            'password' => 'required|string|min:8|confirmed',
+            'password' => 'required|string|min:4',
         ]);
 
         // Create a new user

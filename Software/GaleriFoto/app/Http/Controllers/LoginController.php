@@ -49,9 +49,12 @@ class LoginController extends Controller
 
     public function logout()
     {
-        Auth::guard('guest')->logout();
+        Auth::logout();
 
-        return redirect()->route('home'); // Redirect to the home route after logout
+        // Add a debugging statement
+        \Log::info('Logout successful. Redirecting to home.');
+    
+        return redirect()->route('home');
     }
     /**
      * Display the specified resource.

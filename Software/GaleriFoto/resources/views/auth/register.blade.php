@@ -31,6 +31,9 @@
             <div class="input-group-text">
               <span class="fas fa-user"></span>
             </div>
+            @error('nama_lengkap')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
           </div>
         </div>
         <div class="input-group mb-3">
@@ -39,6 +42,9 @@
             <div class="input-group-text">
               <span class="fas fa-user"></span>
             </div>
+            @error('username')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
           </div>
         </div>
         <div class="input-group mb-3">
@@ -47,6 +53,9 @@
             <div class="input-group-text">
               <span class="fas fa-user"></span>
             </div>
+            @error('alamat')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
           </div>
         </div>
         <div class="input-group mb-3">
@@ -55,6 +64,9 @@
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
             </div>
+            @error('email')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
           </div>
         </div>
         <div class="input-group mb-3">
@@ -63,14 +75,9 @@
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
             </div>
-          </div>
-        </div>
-        <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Konfirmasi Password" name="password_confirmation">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
-            </div>
+            @error('password')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
           </div>
         </div>
         <button type="submit" class="btn btn-primary btn-block">
