@@ -20,8 +20,8 @@ Route::get('/', function () {
 
 Route::group(['middleware' => 'guest'], function () {
     Route::view('/dashboard', 'dashboard')->name('dashboard');
-    Route::view('/profile', '')->name('dashboard');
-    Route::view('/data-gambar', 'data-foto')->name('dashboard');
+    Route::view('/profile', 'profile')->name('profile');
+    Route::view('/data-gambar', 'data-foto')->name('data-foto');
      /**
          * Register Routes
          */
