@@ -18,10 +18,10 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::view('/dashboard', 'dashboard')->name('dashboard');
-
-
 Route::group(['middleware' => 'guest'], function () {
+    Route::view('/dashboard', 'dashboard')->name('dashboard');
+    Route::view('/profile', '')->name('dashboard');
+    Route::view('/data-gambar', 'data-foto')->name('dashboard');
      /**
          * Register Routes
          */
