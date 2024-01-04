@@ -19,9 +19,6 @@ Route::get('/', function () {
 })->name('home');
 
 Route::group(['middleware' => 'guest'], function () {
-    Route::view('/dashboard', 'dashboard')->name('dashboard');
-    Route::view('/profile', 'profile')->name('profile');
-    Route::view('/data-gambar', 'data-foto')->name('data-foto');
      /**
          * Register Routes
          */
@@ -33,10 +30,14 @@ Route::group(['middleware' => 'guest'], function () {
          */
         Route::get('/login', [LoginController::class, 'index'])->name('login.show');
         Route::post('/login', [LoginController::class, 'store'])->name('login.perform');
+});
 
-        /**
-         * Logout
-         */
-        Route::match(['get', 'post'], '/logout', [LoginController::class, 'logout'])->name('logout');
-
+Route::group(['middleware' => 'auth'], function () {
+    Route::view('/dashboard', 'dashboard')->name('dashboard');
+    Route::view('/profile', 'profile')->name('profile');
+    Route::view('/data-gambar', 'data-foto')->name('data-foto');
+    /**
+     * Logout
+     */
+    Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 });

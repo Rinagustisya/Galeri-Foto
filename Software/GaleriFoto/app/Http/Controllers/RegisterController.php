@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Alert;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -49,8 +49,8 @@ class RegisterController extends Controller
         // Log in the newly registered user (optional)
         auth()->login($user);
 
-        // Redirect to the login page after successful registration
-        return redirect()->route('login.show')->with('success', 'Registration successful. Please log in.');
+        Alert::success('Hore!', 'Anda Berhasil Registrasi');
+        return redirect()->route('dashboard');
     }
 
     /**

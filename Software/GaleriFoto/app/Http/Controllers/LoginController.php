@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Alert;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -38,6 +39,7 @@ class LoginController extends Controller
         $credentials = $request->only('username', 'password');
         if (auth()->attempt($credentials)) {
             // Authentication passed...
+            Alert::success('Hore!', 'Anda Berhasil Login!');
             return redirect()->route('dashboard'); // Redirect to the intended page after successful login
         }
 
@@ -50,10 +52,7 @@ class LoginController extends Controller
     public function logout()
     {
         Auth::logout();
-
-        // Add a debugging statement
-        \Log::info('Logout successful. Redirecting to home.');
-    
+        Alert::success('Hore!', 'Anda Berhasil Logout!');
         return redirect()->route('home');
     }
     /**
