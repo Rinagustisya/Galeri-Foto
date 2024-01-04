@@ -34,7 +34,7 @@ class RegisterController extends Controller
             'username' => 'required|string|unique:users',
             'alamat' => 'required|string',
             'email' => 'required|email|unique:users',
-            'password' => 'required|string|min:4',
+            'password' => 'required|string|min:4|confirmed',
         ]);
 
         // Create a new user
@@ -49,7 +49,7 @@ class RegisterController extends Controller
         // Log in the newly registered user (optional)
         auth()->login($user);
 
-        Alert::success('Hore!', 'Anda Berhasil Registrasi');
+        Alert::success('Hore!', 'Anda Berhasil Registrasi, Silahkan Login!');
         return redirect()->route('dashboard');
     }
 

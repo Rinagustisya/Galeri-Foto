@@ -35,6 +35,7 @@ Route::group(['middleware' => 'guest'], function () {
 Route::group(['middleware' => 'auth'], function () {
     Route::view('/dashboard', 'dashboard')->name('dashboard');
     Route::view('/profile', 'profile')->name('profile');
+    Route::view('/TambahData', 'create')->name('create');
     Route::view('/data-gambar', 'data-foto')->name('data-foto');
     /**
      * Logout

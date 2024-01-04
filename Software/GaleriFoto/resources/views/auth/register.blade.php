@@ -30,10 +30,10 @@
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-user"></span>
+              @error('nama_lengkap')
+                  <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
             </div>
-            @error('nama_lengkap')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
           </div>
         </div>
         <div class="input-group mb-3">
@@ -41,10 +41,10 @@
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-user"></span>
+              @error('username')
+                  <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
             </div>
-            @error('username')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
           </div>
         </div>
         <div class="input-group mb-3">
@@ -52,10 +52,10 @@
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-user"></span>
+              @error('alamat')
+                  <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
             </div>
-            @error('alamat')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
           </div>
         </div>
         <div class="input-group mb-3">
@@ -63,10 +63,10 @@
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
+              @error('email')
+                  <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
             </div>
-            @error('email')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
           </div>
         </div>
         <div class="input-group mb-3">
@@ -74,10 +74,21 @@
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
+              @error('password')
+                  <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
             </div>
-            @error('password')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input type="password" class="form-control" placeholder="Konfirmasi Password" name="password_confirmation">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+              @error('password_confirmation')
+                  <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
+            </div>
           </div>
         </div>
         <button type="submit" class="btn btn-primary btn-block">

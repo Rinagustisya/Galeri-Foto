@@ -3,9 +3,26 @@
 @section('content')
 <div class="jumbotron">
    <div class="card">
-        <div class="card-body">
-            <h3>Selamat Datang  {{ Auth::user()->username }}</h3>
+        <div class="card-header">
+            <x-btn-create :link="route('create')" />
         </div>
+            <div class="card-body">
+                    <table class="table table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Kategori</th>
+                                <th>Nama User</th>
+                                <th>Nama Foto</th> 
+                                <th>Deskripsi</th> 
+                                <th>Gambar</th> 
+                                <th>Status</th> 
+                                <th>Aksi</th> 
+                            </tr>
+                        </thead>
+                        
+                </table>
+            </div>
    </div>
 </div>
 @endsection
