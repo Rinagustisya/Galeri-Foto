@@ -37,6 +37,6 @@ Route::group(['middleware' => 'guest'], function () {
         /**
          * Logout
          */
-        Route::match(['get', 'post'], '/logout', 'LoginController@logout')->name('logout');
+        Route::match(['get', 'post'], '/logout', [LoginController::class, 'logout'])->name('logout');
 
 });

@@ -49,7 +49,7 @@ class LoginController extends Controller
 
     public function logout()
     {
-        Auth::logout();
+        Auth::guard('guest')->logout();
 
         return redirect()->route('home'); // Redirect to the home route after logout
     }
