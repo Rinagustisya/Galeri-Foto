@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\ProfileController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,16 +34,18 @@ Route::group(['middleware' => 'guest'], function () {
 });
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('/', function () {
-        return view('welcome');
-    })->name('home');
-    
     Route::view('/dashboard', 'dashboard')->name('dashboard');
-    Route::view('/profile', 'profile')->name('profile');
     Route::view('/TambahData', 'create')->name('create');
     Route::view('/data-gambar', 'data-foto')->name('data-foto');
     /**
      * Logout
      */
     Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+    
+    /**
+     * Profile
+     */
+    Route::view('/profile', 'profile')->name('profile');
+    Route::post('/profile/store', [ProfileController::class, 'store'])->name('profile.store');
+    Route::post('/profile/update-password', [ProfileController::class, 'updatePassword'])->name('profile.updatePassword');
 });
