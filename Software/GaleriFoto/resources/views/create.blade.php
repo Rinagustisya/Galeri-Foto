@@ -82,7 +82,7 @@
                         </div>
                      </div>
                <!-- end upload -->
-                   <button type="submit" class="btn btn-primary">Submit</button>
+                   <button type="submit" class="btn btn-primary btn-block">Submit</button>
                </form>
         </div>
    </div>
