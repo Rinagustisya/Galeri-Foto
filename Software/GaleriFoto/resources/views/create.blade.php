@@ -7,7 +7,7 @@
          <i class="fas fa-plus-circle"></i> Tambah
       </div>
         <div class="card-body">
-         <form action="" method="post" enctype="multipart/form-data">
+         <form action="{{ route('data-foto') }}" method="post" enctype="multipart/form-data">
             <div class="card col-12">
             <div class="row">
                <div class="card-body">
@@ -35,7 +35,10 @@
                   <div class="row">
                      <div class="card-body">
                         <label for="">Nama User </label>
-                           <input type="text" name="nama_lengkap" class="form-control" id="" value="" placeholder="Gisellma Firmansyah" readonly >
+                           <input type="text" name="nama_lengkap" class="form-control" id="" value="{{ Auth::user()->nama_lengkap }}" readonly >
+                           @if ($errors->has('nama_lengkap'))
+                           <span class="text-danger text-left">{{ $errors->first('nama_lengkap') }}</span>
+                           @endif
                      </div>
                   </div>
                </div>
@@ -45,6 +48,9 @@
                      <div class="card-body">
                            <label for="">Nama Foto</label>
                            <input type="text" name="judul_foto" class="form-control" id="" value="" placeholder="Nama Foto" >
+                           @if ($errors->has('judul_foto'))
+                           <span class="text-danger text-left">{{ $errors->first('judul_foto') }}</span>
+                           @endif
                      </div>
                   </div>
                </div>
@@ -53,12 +59,12 @@
                <div class="row">
                   <div class="card-body">
                      <label for="">Set Privasi Foto</label>
-                     <select name="nama_album" id="nama_album" class="form-control">
-                        <option value="Public">Public</option>
+                     <select name="privasi" id="privasi" class="form-control">
+                              <option value="Public">Public</option>
                               <option value="Private">Private</option>
                            </select>
-                              @if ($errors->has('nama_album'))
-                              <span class="text-danger text-left">{{ $errors->first('nama_album') }}</span>
+                              @if ($errors->has('privasi'))
+                              <span class="text-danger text-left">{{ $errors->first('privasi') }}</span>
                               @endif
                            </div>
                         </div>
@@ -68,7 +74,10 @@
                            <div class="row">
                               <div class="card-body">
                                     <label for="">Deskripsi Foto</label>
-                                    <textarea name="" id="" cols="20" rows="5" class="form-control" placeholder="Tambahkan Deskripsi Foto"></textarea>
+                                    <textarea name="deskripsi_foto" id="" cols="20" rows="5" class="form-control" placeholder="Tambahkan Deskripsi Foto"></textarea>
+                                    @if ($errors->has('deskripsi_foto'))
+                                    <span class="text-danger text-left">{{ $errors->first('deskripsi_foto') }}</span>
+                                    @endif
                               </div>
                            </div>
                         </div>
@@ -77,12 +86,12 @@
                         <div class="row">
                            <div class="card-body">
                                  <label for="">Upload Foto <i class="fas fa-upload"></i></label>
-                                 <input type="file" name="" id="" class="form-control">
+                                 <input type="file" name="lokasi_file" id="" class="form-control">
                            </div>
                         </div>
                      </div>
                <!-- end upload -->
-                   <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                   <button type="submit" class="btn btn-success btn-block">Submit</button>
                </form>
         </div>
    </div>

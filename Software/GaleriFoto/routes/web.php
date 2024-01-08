@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DataFotoController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -36,7 +37,6 @@ Route::group(['middleware' => 'guest'], function () {
 Route::group(['middleware' => 'auth'], function () {
     Route::view('/dashboard', 'dashboard')->name('dashboard');
     Route::view('/TambahData', 'create')->name('create');
-    Route::view('/data-gambar', 'data-foto')->name('data-foto');
     /**
      * Logout
      */
@@ -48,4 +48,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::view('/profile', 'profile')->name('profile');
     Route::post('/profile/store', [ProfileController::class, 'store'])->name('profile.store');
     Route::post('/profile/update-password', [ProfileController::class, 'updatePassword'])->name('profile.updatePassword');
+    
+    /**
+     * Data Foto
+     */
+    Route::view('/data-gambar', 'data-foto')->name('data-foto');
+    Route::post('/data-gambar/store', [DataFotoController::class, 'store'])->name('data-gambar.store');
 });
