@@ -24,7 +24,7 @@
                 </table>
             </div>
             <div class="card-body py-0">
-                <!-- {{ $data->appends(['search' => request()->search ])->links('pagenation') }} -->
+              
             </div>
    </div>
 </div>
