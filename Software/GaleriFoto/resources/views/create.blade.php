@@ -9,6 +9,13 @@
         <div class="card-body">
          <form action="{{ route('data-gambar.store') }}" method="post" enctype="multipart/form-data">
          @csrf
+
+            <!-- hidden -->
+            <input type="hidden" name="tgl_unggah" id="tgl_unggah">
+            <input type="hidden" name="user_id" id="user_id" value="{{ Auth::user()->id }}">
+            <input type="hidden" name="album_id" id="album_id">
+            <!-- end hidden -->
+
             <div class="card col-12">
             <div class="row">
                <div class="card-body">

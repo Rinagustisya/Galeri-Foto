@@ -48,14 +48,15 @@ class DataFotoController extends Controller
          $file = $request->file('file_foto');
          $filePath = $file->store('photos', 'public'); // Adjust the storage path accordingly 
 
-        $photo = new Foto;
-        $photo->judul_foto = $request->judul_foto;
-        $photo->deskripsi_foto = $request->deskripsi_foto;
-        $photo->tgl_unggah = now();
-        $photo->lokasi_file = $filePath;
-        $photo->album_id = $album->id;
-        $photo->user_id = $user->id;
-        $photo->save();
+         Foto::create([
+            'judul_foto' => $request->judul_foto,
+            'privasi' => $request->privasi_foto,
+            'deskripsi_foto' => $request->deskripsi_foto,
+            'tgl_unggah' => $request->now(),
+            'lokasi_file' => $filePath,
+            'album_id' => $album->id,
+            'user_id' => $user->id
+        ]);
 
         Alert::success('Hore!', 'Berhasil Menambahkan Data!');
         return redirect()->route('data-foto');
