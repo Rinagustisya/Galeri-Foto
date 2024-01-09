@@ -35,7 +35,7 @@ class DataFotoController extends Controller
          $request->validate([
             'nama_album' => 'required|in:Arsitektur,Dokumenter,Seni_rupa,Fashion,Olahraga,Makanan,Satwa_liar,Hewan,Laut,Perjalanan',
             'judul_foto' => 'required|string|max:255',
-            'privasi_foto' => 'required|in:Public,Private',
+            'privasi' => 'required|in:Public,Private',
             'deskripsi_foto' => 'nullable|string',
             'tgl_unggah' => 'required',
             'user_id' => 'required',
@@ -49,11 +49,11 @@ class DataFotoController extends Controller
 
          //upload image
          $file = $request->file('lokasi_file');
-         $file = $file->storeAs('public/data_foto', $image->hashName()); // Adjust the storage path accordingly 
+         $file = $file->storeAs('public/data_foto', $file->hashName()); // Adjust the storage path accordingly 
 
          Foto::create([
             'judul_foto' => $request->judul_foto,
-            'privasi' => $request->privasi_foto,
+            'privasi' => $request->privasi,
             'deskripsi_foto' => $request->deskripsi_foto,
             'tgl_unggah' => $request->now(),
             'lokasi_file' => $file->hashname(),
