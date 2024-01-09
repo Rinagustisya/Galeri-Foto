@@ -15,7 +15,19 @@ class DataFotoController extends Controller
      */
     public function index()
     {
-        //
+        $search = $request->search;
+        $data = Foto::select('foto.id', 'foto.judul_foto', 'foto.deskripsi_foto', 'foto.lokasi_file', 'foto.privasi', 'album.nama_album', 'user.nama_lengkap')
+            ->join('album', 'foto.album_id', '=', 'album.id')
+            ->join('user', 'foto.user_id', '=', 'user.id')
+            ->when($search, function ($query, $search) {
+                return $query->where('foto.nama_album', 'like', "%{$search}%")
+                    ->orWhere('foto.nama_foto', 'like', "%{$search}%")
+                    ->orWhere('user.nama_lengkap', 'like', "%{$search}%");
+            })
+            ->paginate(5);
+
+        return view('data-foto', ['data' => $data]);
+
     }
 
     /**
@@ -69,7 +81,22 @@ class DataFotoController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $queryId = $request->query('data');
+        $pesan = Foto::find($queryId);
+        return view('data-foto', ['row'=>$data]);
+    }
+
+    public function showGambar($filename)
+    {
+        $path = 'public/data_foto/' . $filename;
+        $filePath = storage_path('app/' . $path);
+
+        if (Storage::exists($path)) {
+            $fileContents = file_get_contents($filePath);
+            return response($fileContents)->header('Content-Type', 'image/jpeg');
+        }
+
+        abort(404);
     }
 
     /**
