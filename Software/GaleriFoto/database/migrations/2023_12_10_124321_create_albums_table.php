@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('albums', function (Blueprint $table) {
             $table->id();
             $table->string('nama_album');
-            $table->text('Deskripsi');
-            $table->date('tgl_buat');
+            $table->text('Deskripsi')->nullable();
+            $table->date('tgl_buat')->nullable();
             $table->timestamps();
         });
     }

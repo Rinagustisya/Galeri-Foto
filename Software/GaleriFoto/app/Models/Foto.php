@@ -14,6 +14,7 @@ class Foto extends Model
         'deskripsi_foto',
         'tgl_unggah',
         'lokasi_file',
+        'privasi',
         'album_id',
         'user_id'
     ];

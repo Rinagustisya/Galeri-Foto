@@ -7,13 +7,12 @@
          <i class="fas fa-plus-circle"></i> Tambah
       </div>
         <div class="card-body">
-         <form action="{{ route('data-gambar.store') }}" method="post" enctype="multipart/form-data">
+         <form action="{{ route('data-gambar.store') }}" method="post" id="data-gambar-form" enctype="multipart/form-data">
          @csrf
 
             <!-- hidden -->
-            <input type="hidden" name="tgl_unggah" id="tgl_unggah">
-            <input type="hidden" name="user_id" id="user_id" value="{{ Auth::user()->id }}">
-            <input type="hidden" name="album_id" id="album_id">
+            @inject('carbon', 'Carbon\Carbon')
+            <input type="hidden" name="tgl_unggah" id="tgl_unggah" value="{{ $carbon::now()->format('m/d/Y') }}">
             <!-- end hidden -->
 
             <div class="card col-12">
@@ -104,4 +103,19 @@
         </div>
    </div>
 </div>
+
+<!-- <script>
+      document.addEventListener('DOMContentLoaded', function () {
+         const form = document.getElementById('data-gambar-form');
+
+         form.addEventListener('submit', function (event) {
+               // Get the current date and time in the desired format
+               const currentDate = new Date();
+               const formattedDate = currentDate.toISOString().slice(0, 19).replace('T', ' ');
+
+               // Set the value of the hidden input field 'tgl_unggah' with the formatted date
+               document.getElementById('tgl_unggah').value = formattedDate;
+         });
+      });
+</script> -->
 @endsection
