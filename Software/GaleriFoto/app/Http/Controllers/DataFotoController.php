@@ -37,7 +37,10 @@ class DataFotoController extends Controller
             'judul_foto' => 'required|string|max:255',
             'privasi_foto' => 'required|in:Public,Private',
             'deskripsi_foto' => 'nullable|string',
-            'file_foto' => 'required|image|mimes:jpeg,png,jpg,gif', 
+            'tgl_unggah' => 'required',
+            'user_id' => 'required',
+            'album_id' => 'required',
+            'lokasi_file' => 'required|image|mimes:jpeg,png,jpg,gif', 
         ]);
 
         $user = Auth::user();
@@ -45,15 +48,15 @@ class DataFotoController extends Controller
         $album = Album::firstOrCreate(['nama_album' => $request->nama_album]);
 
          //upload image
-         $file = $request->file('file_foto');
-         $filePath = $file->store('photos', 'public'); // Adjust the storage path accordingly 
+         $file = $request->file('lokasi_file');
+         $file = $file->storeAs('public/data_foto', $image->hashName()); // Adjust the storage path accordingly 
 
          Foto::create([
             'judul_foto' => $request->judul_foto,
             'privasi' => $request->privasi_foto,
             'deskripsi_foto' => $request->deskripsi_foto,
             'tgl_unggah' => $request->now(),
-            'lokasi_file' => $filePath,
+            'lokasi_file' => $file->hashname(),
             'album_id' => $album->id,
             'user_id' => $user->id
         ]);
