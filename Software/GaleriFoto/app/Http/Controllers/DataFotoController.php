@@ -44,11 +44,15 @@ class DataFotoController extends Controller
 
         $album = Album::firstOrCreate(['nama_album' => $request->nama_album]);
 
+         //upload image
+         $file = $request->file('file_foto');
+         $filePath = $file->store('photos', 'public'); // Adjust the storage path accordingly 
+
         $photo = new Foto;
         $photo->judul_foto = $request->judul_foto;
         $photo->deskripsi_foto = $request->deskripsi_foto;
         $photo->tgl_unggah = now();
-        $photo->lokasi_file = $request->file('file_foto')->store('photos', 'public');
+        $photo->lokasi_file = $filePath;
         $photo->album_id = $album->id;
         $photo->user_id = $user->id;
         $photo->save();
