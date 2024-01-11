@@ -33,7 +33,7 @@
     </div>
 </footer>
 
-
+@yield('modal')
 
 <!-- jQuery -->
 <script src="/adminlte/plugins/jquery/jquery.min.js"></script>
@@ -46,6 +46,7 @@
  <!-- jquery -->
  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
+ @stack('js')
  @include('sweetalert::alert')
 </body>
 </html>

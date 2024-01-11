@@ -16,13 +16,13 @@ class DataFotoController extends Controller
     public function index(Request $request)
     {
         $search = $request->search;
-        $data = Foto::select('foto.id', 'foto.judul_foto', 'foto.deskripsi_foto', 'foto.lokasi_file', 'foto.privasi', 'album.nama_album', 'user.nama_lengkap')
-            ->join('album', 'foto.album_id', '=', 'album.id')
-            ->join('user', 'foto.user_id', '=', 'user.id')
+        $data = Foto::select('fotos.id', 'fotos.judul_foto', 'fotos.deskripsi_foto', 'fotos.lokasi_file', 'fotos.privasi', 'albums.nama_album', 'users.nama_lengkap')
+            ->join('albums', 'fotos.album_id', '=', 'albums.id')
+            ->join('users', 'fotos.user_id', '=', 'users.id')
             ->when($search, function ($query, $search) {
-                return $query->where('foto.nama_album', 'like', "%{$search}%")
-                    ->orWhere('foto.nama_foto', 'like', "%{$search}%")
-                    ->orWhere('user.nama_lengkap', 'like', "%{$search}%");
+                return $query->where('fotos.nama_album', 'like', "%{$search}%")
+                    ->orWhere('fotos.nama_foto', 'like', "%{$search}%")
+                    ->orWhere('users.nama_lengkap', 'like', "%{$search}%");
             })
             ->paginate(5);
 
@@ -93,18 +93,23 @@ class DataFotoController extends Controller
         }
     }
 
-    public function showGambar($filename)
+    public function showGambar($filename = null)
     {
+        if ($filename === null) {
+            abort(404);
+        }
+    
         $path = 'public/data_foto/' . $filename;
         $filePath = storage_path('app/' . $path);
-
+    
         if (Storage::exists($path)) {
             $fileContents = file_get_contents($filePath);
             return response($fileContents)->header('Content-Type', 'image/jpeg');
         }
-
+    
         abort(404);
     }
+    
 
     /**
      * Show the form for editing the specified resource.
