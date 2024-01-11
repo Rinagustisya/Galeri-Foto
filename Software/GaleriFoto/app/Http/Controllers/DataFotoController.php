@@ -79,11 +79,18 @@ class DataFotoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(int $data)
     {
-        $queryId = $request->query('data');
-        $pesan = Foto::find($queryId);
-        return view('data-foto', ['row'=>$data]);
+        // $queryId = $request->query('data');
+        // $data = Foto::find($queryId);
+        // return view('data-foto', ['row'=>$data]);
+        $data = Foto::find($data);
+
+        if ($data) {
+            return view('data-foto-edit', ['row' => $data]);
+        } else {
+            return redirect()->route('data-foto')->with('error', 'Data Not Found!');
+        }
     }
 
     public function showGambar($filename)
@@ -118,8 +125,26 @@ class DataFotoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(int $data)
     {
-        //
+        // $data = Foto::find($data);
+
+        // if ($data->lokasi_file) {
+        //     $file = 'public/data_foto/' . $data->lokasi_file;
+            
+        //     if (Storage::exists($file)) {
+        //         Storage::delete($file);
+        //     }
+        // }
+        // // Hapus fasilitas dari database
+        // $data->delete();
+
+        // Alert::success('Hore!', 'Data Berhasil Dihapus!');
+        // return back()->with('status', 'destroy');
+        $data = Foto::find($data);
+
+        $data->delete();
+        Alert::success('Hore!', 'Data Berhasil Dihapus!');
+        return back();
     }
 }

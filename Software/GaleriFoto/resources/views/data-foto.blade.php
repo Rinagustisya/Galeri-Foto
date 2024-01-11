@@ -39,7 +39,7 @@
                                 <td>{{ $row->nama_lengkap }}</td>
                                 <td>{{ $row->judul_foto }}</td>
                                 <td>{{ $row->deskripsi_foto }}</td>
-                                <!-- <td>{{ $row->judul_foto }}</td> -->
+                                <td>{{ $row->judul_foto }}</td>
                                 <td>{{ $row->privasi }}</td>
                                 <td>
                                     <x-btn-edit :link="route('data-foto.show',['data'=>$row->id])" />
