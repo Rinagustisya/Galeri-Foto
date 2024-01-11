@@ -1,4 +1,4 @@
-@extends('layouts.master', ['title'=>'Data Foto'])
+@extends('layouts.master', ['title'=>'Profile'])
 
 @section('content')
 <div class="jumbotron">

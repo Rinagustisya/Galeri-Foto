@@ -13,7 +13,7 @@ class DataFotoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $search = $request->search;
         $data = Foto::select('foto.id', 'foto.judul_foto', 'foto.deskripsi_foto', 'foto.lokasi_file', 'foto.privasi', 'album.nama_album', 'user.nama_lengkap')
@@ -83,11 +83,11 @@ class DataFotoController extends Controller
     {
         // $queryId = $request->query('data');
         // $data = Foto::find($queryId);
-        // return view('data-foto', ['row'=>$data]);
+        // return view('data-foto', ['data'=>$data]);
         $data = Foto::find($data);
 
         if ($data) {
-            return view('data-foto-edit', ['row' => $data]);
+            return view('data-foto-edit', ['data' => $data]);
         } else {
             return redirect()->route('data-foto')->with('error', 'Data Not Found!');
         }
@@ -127,24 +127,24 @@ class DataFotoController extends Controller
      */
     public function destroy(int $data)
     {
-        // $data = Foto::find($data);
-
-        // if ($data->lokasi_file) {
-        //     $file = 'public/data_foto/' . $data->lokasi_file;
-            
-        //     if (Storage::exists($file)) {
-        //         Storage::delete($file);
-        //     }
-        // }
-        // // Hapus fasilitas dari database
-        // $data->delete();
-
-        // Alert::success('Hore!', 'Data Berhasil Dihapus!');
-        // return back()->with('status', 'destroy');
         $data = Foto::find($data);
 
+        if ($data->lokasi_file) {
+            $file = 'public/data_foto/' . $data->lokasi_file;
+            
+            if (Storage::exists($file)) {
+                Storage::delete($file);
+            }
+        }
+        // Hapus fasilitas dari database
         $data->delete();
+
         Alert::success('Hore!', 'Data Berhasil Dihapus!');
         return back();
+        // $data = Foto::find($data);
+
+        // $data->delete();
+        // Alert::success('Hore!', 'Data Berhasil Dihapus!');
+        // return back();
     }
 }
