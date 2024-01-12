@@ -99,8 +99,8 @@ class DataFotoController extends Controller
             abort(404);
         }
     
-        $path = 'public/data_foto/' . $filename;
-        $filePath = storage_path('app/' . $path);
+        $path = 'public/data_foto' . $filename;
+        $filePath = storage_path('app' . $path);
     
         if (Storage::exists($path)) {
             $fileContents = file_get_contents($filePath);

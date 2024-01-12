@@ -25,7 +25,7 @@
                                 <th>Nama User</th>
                                 <th>Nama Foto</th> 
                                 <th>Deskripsi</th> 
-                                <!-- <th>Gambar</th>  -->
+                                <th>Gambar</th> 
                                 <th>Status</th> 
                                 <th>Aksi</th> 
                             </tr>
@@ -39,7 +39,7 @@
                                 <td>{{ $row->nama_lengkap }}</td>
                                 <td>{{ $row->judul_foto }}</td>
                                 <td>{{ $row->deskripsi_foto }}</td>
-                                <!-- <td>{{ route('show.foto', ['filename' => basename($row->lokasi_file)]) }}</td> -->
+                                <td><img src="{{ route('show.foto', ['filename?' => basename($row->lokasi_file)]) }}" alt="gambar"></td>
                                 <td>{{ $row->privasi }}</td>
                                 <td>
                                     <x-btn-edit :link="route('data-foto.show',['data'=>$row->id])" />
