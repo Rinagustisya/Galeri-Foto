@@ -7,6 +7,7 @@ use App\Models\Album;
 use App\Models\Foto;
 use Alert;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class DataFotoController extends Controller
 {
