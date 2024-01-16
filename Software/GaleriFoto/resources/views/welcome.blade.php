@@ -4,82 +4,33 @@
 <div class="jumbotron">
     <div class="card">
         <div class="card-body">
-            <div class="col-12">
-                <form class="form-inline">
+            <div class="row">
+                <div class="col-8">
                     <input class="form-control mr-sm-2 w-100" type="search" placeholder="Search" aria-label="Search">
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- kategori -->
-    <div class="card">
-        <div class="card-body">
-            <h3><strong>Kategori</strong></h3>
-            <div class="container border p-3">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="row first-row justify-content-center">
-                            <div class="col-2">
-                                <button><i class="fas fa-bars"></i></button>
-                                <span class="label">Arsitektur</span>
-                            </div>
-
-                            <div class="col-2">
-                                <button><i class="fas fa-bars"></i></button>
-                                <span class="label">Dokumenter</span>
-                            </div>
-
-                            <div class="col-2">
-                                <button><i class="fas fa-bars"></i></button>
-                                <span class="label">Seni Rupa</span>
-                            </div>
-
-                            <div class="col-2">
-                                <button><i class="fas fa-bars"></i></button>
-                                <span class="label">Fashion</span>
-                            </div>
-
-                            <div class="col-2">
-                                <button><i class="fas fa-bars"></i></button>
-                                <span class="label">Olahraga</span>
-                            </div>
-                            </div>
+                </div>
+                <div class="col-4">
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button" id="dropdownMenuButton" data-toggle="dropdown">
+                        Kategori
+                    </button>
+                    <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="#">Arsitektur</a>
+                        <a class="dropdown-item" href="#">Dokumenter</a>
+                        <a class="dropdown-item" href="#">Seni Rupa</a>
+                        <a class="dropdown-item" href="#">Fashion</a>
+                        <a class="dropdown-item" href="#">Olahraga</a>
+                        <a class="dropdown-item" href="#">Makanan</a>
+                        <a class="dropdown-item" href="#">Satwa Liar</a>
+                        <a class="dropdown-item" href="#">Hewan</a>
+                        <a class="dropdown-item" href="#">Laut</a>
+                        <a class="dropdown-item" href="#">Perjalanan</a>
                     </div>
-                    <br>
-                    <div class="col-12">
-                        <div class="row justify-content-center">
-                            <div class="col-2">
-                                <button><i class="fas fa-bars"></i></button>
-                                <span class="label">Makanan</span>
-                            </div>
-
-                            <div class="col-2">
-                                <button><i class="fas fa-bars"></i></button>
-                                <span class="label">Satwa Liar</span>
-                            </div>
-
-                            <div class="col-2">
-                                <button><i class="fas fa-bars"></i></button>
-                                <span class="label">Hewan</span>
-                            </div>
-
-                            <div class="col-2">
-                                <button><i class="fas fa-bars"></i></button>
-                                <span class="label">Laut</span>
-                            </div>
-
-                            <div class="col-2">
-                                <button><i class="fas fa-bars"></i></button>
-                                <span class="label">Perjalanan</span>
-                            </div>
-                            </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- end kategori -->
+
 
     <!-- Foto Terbaru -->
     <div class="card">

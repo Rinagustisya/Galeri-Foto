@@ -1,7 +1,12 @@
 /* Sticky footer styles
 -------------------------------------------------- */
 .jumbotron {
-  padding-top: 6rem;
+  padding-top: 5rem;
+}
+
+.dropdown-item:hover {
+  background-color: #e9ecef; /* Warna latar belakang yang berubah saat hover */
+  color: #495057; /* Warna teks yang berubah saat hover */
 }
 
 .col-2 {
@@ -26,8 +31,9 @@ html {
 }
 
 body {
-  margin-bottom: 30px; /* Margin bottom by footer height */
+  margin-bottom: 5px; /* Margin bottom by footer height */
 }
+
 .footer {
   position: absolute;
   bottom: 0;
@@ -48,33 +54,3 @@ body {
   padding: 0 15px;
 }
 
-.form-pesan{
-  margin-top: -45px;
-  background-color: white;
-  z-index: 10;
-  position: relative;
-}
-
-.fasilitas img{
-   width : 100%;
-   height : 150px;
-   object-fit: cover;
-   object-position: 100% 0;
-}
-
-.fasilitas .card-header, .kamar .card-header {
-  text-align:center;
-  font-weight:bold;
-}
-
-.kamar img{
-  width : 100%;
-  height : 220px;
-  object-fit: cover;
-  object-position: 100% 0;
-}
-
-.kamar a .card-footer{
-  color:black;
-  text-align:center;
-}

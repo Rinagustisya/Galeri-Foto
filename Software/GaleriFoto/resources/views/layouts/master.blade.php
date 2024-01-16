@@ -15,6 +15,9 @@
   <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css">
  
   <link rel="stylesheet" href="/css/style.css">
+
+  <!-- select 2 -->
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 </head>
 <body class="hold-transition">
 <!-- As a link -->
@@ -44,8 +47,11 @@
 <!-- AdminLTE App -->
 <script src="/adminlte/dist/js/adminlte.min.js"></script>
  <!-- jquery -->
- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<!-- select 2 -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
+@stack('select2')
  @stack('js')
  @include('sweetalert::alert')
 </body>
