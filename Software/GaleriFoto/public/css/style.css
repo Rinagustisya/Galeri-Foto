@@ -9,6 +9,19 @@
   color: #495057; /* Warna teks yang berubah saat hover */
 }
 
+.img-container {
+  margin-bottom: 10px; /* Jarak antara gambar dan tombol */
+}
+
+
+
+.custom-margin {
+  margin-bottom: 10px; /* Atur nilai margin sesuai keinginan Anda */
+}
+.nama-user-h5 {
+  border-bottom: 1px solid #000; /* Warna dan gaya garis yang diinginkan */
+  padding-bottom: 10px; /* Jarak antara teks dan garis bawah */
+}
 .col-2 {
   text-align: center;
 }
