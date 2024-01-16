@@ -1,6 +1,6 @@
 <div class="modal fade" id="ModalDelete" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
-    <form class="modal-content" method="post">
+    <form class="modal-content">
         @method('delete')
       <div class="modal-header">
         <h6 class="modal-title" id="exampleModalLabel">

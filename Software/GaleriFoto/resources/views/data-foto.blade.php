@@ -56,3 +56,7 @@
    </div>
 </div>
 @endsection
+
+@section('modal')
+<x-modal-delete />
+@endsection
