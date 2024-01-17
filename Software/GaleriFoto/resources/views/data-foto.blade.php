@@ -5,16 +5,6 @@
    <div class="card">
         <div class="card-header">
             <x-btn-create :link="route('create')" />
-            <div class="col-4">
-            <form action="?" method="get">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Cari..." name="search" value="<?php request()->search ?>">
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-primary" type="submit"><i class="fas fa-search"></i></button>
-                    </div>
-                </div>
-            </form>
-        </div>
         </div>
             <div class="card-body">
                     <table class="table table-hover table-striped">
@@ -43,7 +33,7 @@
                                 <td>{{ $row->privasi }}</td>
                                 <td>
                                     <x-btn-edit :link="route('data-foto.show',['data'=>$row->id])" />
-                                    <x-btn-delete :link="route('data-foto.destroy',['data'=>$row->id])" />
+                                    <x-btn-delete :link="route('foto.destroy',['foto'=>$row->id])" />
                                 </td>
                             </tr>
                             @endforeach
