@@ -1,9 +1,9 @@
 <div class="modal fade" id="ModalDelete" tabindex="-1" role="dialog">
-  <div class="modal-dialog" method="POST">
-    <form class="modal-content">
+  <div class="modal-dialog" role="document">
+    <form class="modal-content" method="POST">
       @method('delete')
       <!-- input hidden -->
-        <input type="hidden" name="foto_id" id="foto_id" value="{{ $extra->id ?? '' }}">
+        <input type="hidden" name="foto_id" id="foto_id">
 
           <div class="modal-header">
             <h6 class="modal-title" id="exampleModalLabel">
@@ -30,10 +30,10 @@
             $('#ModalDelete').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget) 
             var recipient = button.data('link')
+            var extra = button.data('extra')
             var modal = $(this)
             modal.find('.modal-content').attr('action', recipient)
-            var fotoId = document.getElementById('foto_id').value;
-            console.log(fotoId);
+            document.getElementById('foto_id').value = extra
             });
         });
     </script>
