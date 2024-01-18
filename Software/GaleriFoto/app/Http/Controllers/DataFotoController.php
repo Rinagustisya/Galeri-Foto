@@ -20,6 +20,7 @@ class DataFotoController extends Controller
         $data = Foto::select('fotos.id', 'fotos.judul_foto', 'fotos.deskripsi_foto', 'fotos.lokasi_file', 'fotos.privasi', 'albums.nama_album', 'users.nama_lengkap')
             ->join('albums', 'fotos.album_id', '=', 'albums.id')
             ->join('users', 'fotos.user_id', '=', 'users.id')
+            ->where('fotos.user_id', auth()->id())
             ->when($search, function ($query, $search) {
                 return $query->where('fotos.nama_album', 'like', "%{$search}%")
                     ->orWhere('fotos.nama_foto', 'like', "%{$search}%")
@@ -133,20 +134,22 @@ class DataFotoController extends Controller
      */
     public function destroy(int $fotoId)
     {
-        $foto = Foto::find($fotoId);
-    
+        $foto = Foto::where('id', $fotoId)
+            ->where('user_id', auth()->id())
+            ->first();
+        
         if (!$foto) {
-            dd('Data not found'); // Add this line for debugging
+            dd('Data not found or you do not have permission to delete this data'); 
         }
     
         if ($foto->lokasi_file) {
-            $file = 'public/data_foto/' . $foto->lokasi_file; // Change $data to $foto
+            $file = 'public/data_foto/' . $foto->lokasi_file;
     
             if (Storage::exists($file)) {
                 Storage::delete($file);
-                dd('File deleted successfully'); // Add this line for debugging
+                dd('File deleted successfully'); 
             } else {
-                dd('File not found'); // Add this line for debugging
+                dd('File not found'); 
             }
         }
     
@@ -156,5 +159,5 @@ class DataFotoController extends Controller
         Alert::success('Hore!', 'Data Berhasil Dihapus!');
         return redirect()->route('data-foto.show');
     }
-
+    
 }
