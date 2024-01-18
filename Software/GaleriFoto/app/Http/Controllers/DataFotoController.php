@@ -96,21 +96,22 @@ class DataFotoController extends Controller
     }
 
     public function showGambar($filename = null)
-    {
-        if ($filename === null) {
-            abort(404);
-        }
-    
-        $path = 'public/data_foto' . $filename;
-        $filePath = storage_path('app' . $path);
-    
-        if (Storage::exists($path)) {
-            $fileContents = file_get_contents($filePath);
-            return response($fileContents)->header('Content-Type', 'image/jpeg');
-        }
-    
+{
+    if ($filename === null) {
         abort(404);
     }
+
+    $path = 'public/data_foto/' . $filename; // Corrected path concatenation
+    $filePath = storage_path('app/' . $path); // Corrected path concatenation
+
+    if (Storage::exists($path)) {
+        $fileContents = file_get_contents($filePath);
+        return response($fileContents)->header('Content-Type', 'image/jpeg/jpg/png');
+    }
+
+    abort(404);
+}
+
     
 
     /**
