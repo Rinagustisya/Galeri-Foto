@@ -5,6 +5,9 @@
    <div class="card">
         <div class="card-header">
             <x-btn-create :link="route('create')" />
+            @if(isset($row))
+    {{ dd($row) }}
+@endif
         </div>
             <div class="card-body">
                     <table class="table table-hover table-striped">
@@ -33,7 +36,7 @@
                                 <td>{{ $row->privasi }}</td>
                                 <td>
                                     <x-btn-edit :link="route('data-foto.show',['data'=>$row->id])" />
-                                    <x-btn-delete :link="route('foto.destroy',['foto'=>$row->id])" />
+                                    <x-btn-delete :link="route('foto.destroy')" :extra="['foto'=>$row->id]"/>
                                 </td>
                             </tr>
                             @endforeach

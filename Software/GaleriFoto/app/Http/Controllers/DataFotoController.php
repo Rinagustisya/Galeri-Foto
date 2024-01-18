@@ -131,30 +131,30 @@ class DataFotoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(int $foto)
-{
-    $foto = Foto::find($foto);
-
-    if (!$foto) {
-        dd('Data not found'); // Add this line for debugging
-    }
-
-    if ($foto->lokasi_file) {
-        $file = 'public/data_foto/' . $data->lokasi_file;
-
-        if (Storage::exists($file)) {
-            Storage::delete($file);
-            dd('File deleted successfully'); // Add this line for debugging
-        } else {
-            dd('File not found'); // Add this line for debugging
+    public function destroy(int $fotoId)
+    {
+        $foto = Foto::find($fotoId);
+    
+        if (!$foto) {
+            dd('Data not found'); // Add this line for debugging
         }
+    
+        if ($foto->lokasi_file) {
+            $file = 'public/data_foto/' . $foto->lokasi_file; // Change $data to $foto
+    
+            if (Storage::exists($file)) {
+                Storage::delete($file);
+                dd('File deleted successfully'); // Add this line for debugging
+            } else {
+                dd('File not found'); // Add this line for debugging
+            }
+        }
+    
+        // Hapus foto dari database
+        $foto->delete();
+    
+        Alert::success('Hore!', 'Data Berhasil Dihapus!');
+        return redirect()->route('data-foto.show');
     }
-
-    // Hapus fasilitas dari database
-    $foto->delete();
-
-    Alert::success('Hore!', 'Data Berhasil Dihapus!');
-    return redirect()->route('data-foto.show');
-}
 
 }
