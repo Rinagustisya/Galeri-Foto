@@ -81,15 +81,18 @@ class DataFotoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(int $data)
+    public function show(int $id)
     {
-        // $queryId = $request->query('data');
-        // $data = Foto::find($queryId);
-        // return view('data-foto', ['data'=>$data]);
-        $data = Foto::find($data);
+        $data = Foto::find($id);
+        $album = Album::find($data->album_id);
 
-        if ($data) {
-            return view('data-foto-edit', ['data' => $data]);
+        if ($album) {
+            $albums = Album::where('nama_album', $album->nama_album)->pluck('nama_album')->unique();
+            
+            return view('data-foto-edit', [
+                'data' => $data,
+                'albums' => $albums,
+            ]);
         } else {
             return redirect()->route('data-foto')->with('error', 'Data Not Found!');
         }
@@ -125,9 +128,50 @@ class DataFotoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'nama_album' => 'required|in:Arsitektur,Dokumenter,Seni_rupa,Fashion,Olahraga,Makanan,Satwa_liar,Hewan,Laut,Perjalanan',
+            'judul_foto' => 'required|string|max:255',
+            'privasi' => 'required|in:Public,Private',
+            'deskripsi_foto' => 'nullable|string',
+            'lokasi_file' => 'nullable|image|mimes:jpeg,png,jpg,gif',
+        ]);
+    
+        $foto = Foto::find($id);
+    
+        if (!$foto) {
+            return redirect()->back()->with('error', 'Foto tidak ditemukan');
+        }
+    
+        $user = Auth::user();
+    
+        $album = Album::firstOrCreate(['nama_album' => $request->nama_album]);
+        $request->merge(['album_id' => $album->id]);
+    
+        // Upload image if a new file is provided
+        if ($request->hasFile('lokasi_file')) {
+            $file = $request->file('lokasi_file');
+            $fileHashName = $file->storeAs('public/data_foto', $file->hashName());
+    
+            // Hapus foto lama jika ada
+            if (Storage::exists($foto->lokasi_file)) {
+                Storage::delete($foto->lokasi_file);
+            }
+    
+            $foto->lokasi_file = $fileHashName;
+        }
+    
+        $foto->judul_foto = $request->judul_foto;
+        $foto->privasi = $request->privasi;
+        $foto->deskripsi_foto = $request->deskripsi_foto;
+        $foto->tgl_unggah = now();
+        $foto->album_id = $album->id;
+        $foto->user_id = $user->id;
+        $foto->save();
+    
+        Alert::success('Hore!', 'Berhasil Mengedit Postingan!');
+        return redirect()->route('data-foto');
     }
 
     /**

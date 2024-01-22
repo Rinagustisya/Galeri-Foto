@@ -22,18 +22,18 @@
                         <select name="nama_album" id="nama_album" class="form-control">
                            <option value="Arsitektur">Arsitektur</option>
                            <option value="Dokumenter">Dokumenter</option>
-                           <option value="Seni_rupa">Seni Rupa</option>
+                           <option value="Seni rupa">Seni Rupa</option>
                            <option value="Fashion">Fashion</option>
                            <option value="Olahraga">Olahraga</option>
                            <option value="Makanan">Makanan</option>
-                           <option value="Satwa_liar">Satwa Liar</option>
+                           <option value="Satwa liar">Satwa Liar</option>
                            <option value="Hewan">Hewan</option>
                            <option value="Laut">Laut</option>
                            <option value="Perjalanan">Perjalanan</option>
                         </select>
-                           @if ($errors->has('nama_album'))
+                        @if ($errors->has('nama_album'))
                            <span class="text-danger text-left">{{ $errors->first('nama_album') }}</span>
-                           @endif
+                        @endif
                   </div>
                </div>
             </div>

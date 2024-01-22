@@ -35,7 +35,7 @@
                                 <td><img src="{{ route('show.foto', ['filename' => basename($row->lokasi_file)]) }}" alt="gambar" class="img-fluid"></td>
                                 <td>{{ $row->privasi }}</td>
                                 <td>
-                                    <x-btn-edit :link="route('data-foto.show',['data'=>$row->id])" />
+                                    <x-btn-edit :link="route('data-foto.show',['id'=>$row->id])" />
                                     <x-btn-delete :link="route('foto.destroy', ['fotoId' => $row->id])" :extra="$row->id"/>
                                 </td>
                             </tr>
