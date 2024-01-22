@@ -55,6 +55,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('data-gambar',  [DataFotoController::class, 'index'])->name('data-foto');
     Route::post('/data-gambar/store', [DataFotoController::class, 'store'])->name('data-gambar.store');
     Route::get('/data-gambar/showdata/{data}', [DataFotoController::class, 'show'])->name('data-foto.show');
-    Route::delete('/data-gambar/hapus', [DataFotoController::class, 'destroy'])->name('foto.destroy');
+    Route::delete('/data-gambar/hapus/{fotoId}', [DataFotoController::class, 'destroy'])->name('foto.destroy');
     Route::get('/data-gambar/{filename?}', [DataFotoController::class, 'showGambar'])->name('show.foto');
 });

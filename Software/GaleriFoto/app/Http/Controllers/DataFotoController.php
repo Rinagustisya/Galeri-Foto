@@ -96,21 +96,21 @@ class DataFotoController extends Controller
     }
 
     public function showGambar($filename = null)
-{
-    if ($filename === null) {
+    {
+        if ($filename === null) {
+            abort(404);
+        }
+
+        $path = 'public/data_foto/' . $filename; // Corrected path concatenation
+        $filePath = storage_path('app/' . $path); // Corrected path concatenation
+
+        if (Storage::exists($path)) {
+            $fileContents = file_get_contents($filePath);
+            return response($fileContents)->header('Content-Type', 'image/jpeg/jpg/png');
+        }
+
         abort(404);
     }
-
-    $path = 'public/data_foto/' . $filename; // Corrected path concatenation
-    $filePath = storage_path('app/' . $path); // Corrected path concatenation
-
-    if (Storage::exists($path)) {
-        $fileContents = file_get_contents($filePath);
-        return response($fileContents)->header('Content-Type', 'image/jpeg/jpg/png');
-    }
-
-    abort(404);
-}
 
     
 
@@ -133,32 +133,28 @@ class DataFotoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(int $fotoId)
+    public function destroy($fotoId)
     {
         $foto = Foto::where('id', $fotoId)
             ->where('user_id', auth()->id())
-            ->first();
-        
-        if (!$foto) {
-            dd('Data not found or you do not have permission to delete this data'); 
+            ->firstOrFail();
+
+        $file = 'public/data_foto/' . $foto->lokasi_file;
+
+        \Log::info('File path:', ['file' => $file]);
+
+        if (Storage::exists($file)) {
+            // If the file exists, delete it
+            Storage::delete($file);
+            \Log::info('File deleted successfully');
+        } else {
+            \Log::error('File not found');
         }
-    
-        if ($foto->lokasi_file) {
-            $file = 'public/data_foto/' . $foto->lokasi_file;
-    
-            if (Storage::exists($file)) {
-                Storage::delete($file);
-                dd('File deleted successfully'); 
-            } else {
-                dd('File not found'); 
-            }
-        }
-    
-        // Hapus foto dari database
+
         $foto->delete();
-    
+
         Alert::success('Hore!', 'Data Berhasil Dihapus!');
-        return redirect()->route('data-foto.show');
+        return redirect()->route('data-foto');
     }
-    
+
 }

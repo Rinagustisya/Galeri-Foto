@@ -36,7 +36,7 @@
                                 <td>{{ $row->privasi }}</td>
                                 <td>
                                     <x-btn-edit :link="route('data-foto.show',['data'=>$row->id])" />
-                                    <x-btn-delete :link="route('foto.destroy')" :extra="$row->id"/>
+                                    <x-btn-delete :link="route('foto.destroy', ['fotoId' => $row->id])" :extra="$row->id"/>
                                 </td>
                             </tr>
                             @endforeach
