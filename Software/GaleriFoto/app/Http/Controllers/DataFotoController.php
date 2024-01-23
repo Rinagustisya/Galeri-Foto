@@ -22,8 +22,8 @@ class DataFotoController extends Controller
             ->join('users', 'fotos.user_id', '=', 'users.id')
             ->where('fotos.user_id', auth()->id())
             ->when($search, function ($query, $search) {
-                return $query->where('fotos.nama_album', 'like', "%{$search}%")
-                    ->orWhere('fotos.nama_foto', 'like', "%{$search}%")
+                return $query->where('albums.nama_album', 'like', "%{$search}%")
+                    ->orWhere('fotos.judul_foto', 'like', "%{$search}%")
                     ->orWhere('users.nama_lengkap', 'like', "%{$search}%");
             })
             ->paginate(5);
@@ -47,7 +47,7 @@ class DataFotoController extends Controller
     {
          // Validate the form data
          $request->validate([
-            'nama_album' => 'required|in:Arsitektur,Dokumenter,Seni_rupa,Fashion,Olahraga,Makanan,Satwa_liar,Hewan,Laut,Perjalanan',
+            'nama_album' => 'required|in:Arsitektur,Dokumenter,Seni rupa,Fashion,Olahraga,Makanan,Satwa liar,Hewan,Laut,Perjalanan',
             'judul_foto' => 'required|string|max:255',
             'privasi' => 'required|in:Public,Private',
             'deskripsi_foto' => 'nullable|string',

@@ -5,9 +5,10 @@
    <div class="card">
         <div class="card-header">
             <x-btn-create :link="route('create')" />
+            <x-search />
             @if(isset($row))
-    {{ dd($row) }}
-@endif
+                {{ dd($row) }}
+            @endif
         </div>
             <div class="card-body">
                     <table class="table table-hover table-striped">
@@ -32,7 +33,7 @@
                                 <td>{{ $row->nama_lengkap }}</td>
                                 <td>{{ $row->judul_foto }}</td>
                                 <td>{{ $row->deskripsi_foto }}</td>
-                                <td><img src="{{ route('show.foto', ['filename' => basename($row->lokasi_file)]) }}" alt="gambar" class="img-fluid"></td>
+                                <td><img src="{{ route('show.foto', ['filename' => basename($row->lokasi_file)]) }}" alt="gambar" class="img-fluid" style="width: 100px; height: 100px;"></td>
                                 <td>{{ $row->privasi }}</td>
                                 <td>
                                     <x-btn-edit :link="route('data-foto.show',['id'=>$row->id])" />
