@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-secondary shadow fixed-top">
+<nav class="navbar navbar-expand-md navbar-dark shadow fixed-top" style="background-color: #265073;">
     <div class="container">
         <a class="navbar-brand h1" href="">
         <i class="fas fa-images"></i>  &nbsp; Galeri Foto
