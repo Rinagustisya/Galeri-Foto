@@ -5,7 +5,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DataFotoController;
-use App\Http\Controllers\ShowFotoController;
+use App\Http\Controllers\LikeFotoController;
 use App\Http\Controllers\SSEController;
 /*
 |--------------------------------------------------------------------------
@@ -60,6 +60,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/data-gambar/showdata/{id}', [DataFotoController::class, 'show'])->name('data-foto.show');
     Route::delete('/data-gambar/hapus/{fotoId}', [DataFotoController::class, 'destroy'])->name('foto.destroy');
     Route::get('/data-gambar/{filename?}', [DataFotoController::class, 'showGambar'])->name('show.foto');
+    /**
+     * Like Foto
+     */
+    Route::post('/like-foto', [LikeFotoController::class, 'likeFoto']);
     /**
      * SEE server sent event
      */

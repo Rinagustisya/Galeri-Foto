@@ -43,8 +43,20 @@
                     <div class="img-container">
                         <img src="{{ route('all.foto', ['filename' => basename($foto->lokasi_file)]) }}" alt="gambar" class="img-fluid" style="height: 300px;">
                     </div>
-                    <a href=""><i class="far fa-heart"></i></a>
-                    <a href=""><i class="far fa-comments"></i></a>&nbsp;&nbsp;&nbsp;Disukai oleh...
+                    <button class="like-button" @if($foto) data-foto-id="{{ $foto->id }}" @endif data-user-id="{{ auth()->user()->id }}">
+                        <i class="fas fa-heart"></i> Like
+                    </button>
+                    <a href=""><i class="far fa-comments"></i></a>
+                    <div class="custom-margin">
+                        <p id="liked-by-text">Disukai oleh: 
+                            @foreach ($foto->likes as $like)
+                                {{ $like->user->name }}
+                                @if (!$loop->last)
+                                    ,
+                                @endif
+                            @endforeach
+                        </p>
+                    </div>
                     <div class="custom-margin">Kategori :  &nbsp;{{ $foto->album->nama_album }}</div>
                     <div class="custom-margin">Deskripsi :  &nbsp;{{ $foto->deskripsi_foto }}</div>
                 </div>
@@ -56,6 +68,35 @@
 </div>
 @endsection
 
-@push('realtime')
+@push('like')
+<script>
+   $(document).ready(function () {
+        $('.like-button').on('click', function () {
+            var fotoId = $(this).data('foto-id');
+            var userId = $(this).data('user-id');
+            var button = $(this);
 
+            $.ajax({
+                type: 'POST',
+                url: '/like-foto',
+                data: {
+                    foto_id: fotoId,
+                    user_id: userId
+                },
+                success: function (response) {
+                    console.log(response.message);
+
+                    // Perbarui teks "Disukai oleh" di dalam elemen dengan id "liked-by-text"
+                    var liked_by = response.liked_by.join(', ');
+                    $('#liked-by-text').text('Disukai oleh: ' + liked_by);
+
+                    button.toggleClass('liked');
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+    });
+</script>
 @endpush

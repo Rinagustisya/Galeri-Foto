@@ -3,7 +3,14 @@
 .jumbotron {
   padding-top: 5rem;
 }
-
+.like-button {
+  background-color: black;
+  color: white;
+}
+.like-button.liked {
+  background-color: red;
+  color: black;
+}
 .dropdown-item:hover {
   background-color: #e9ecef; /* Warna latar belakang yang berubah saat hover */
   color: #495057; /* Warna teks yang berubah saat hover */
