@@ -17,9 +17,7 @@ use App\Http\Controllers\SSEController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::get('/', [DataFotoController::class, 'showEntry'])->name('home');
 
 Route::group(['middleware' => 'guest'], function () {
      /**
@@ -34,6 +32,7 @@ Route::group(['middleware' => 'guest'], function () {
         Route::get('/login', [LoginController::class, 'index'])->name('login.show');
         Route::post('/login', [LoginController::class, 'store'])->name('login.perform');
 });
+
 
 Route::group(['middleware' => 'auth'], function () {
     Route::view('/dashboard', 'dashboard')->name('dashboard');

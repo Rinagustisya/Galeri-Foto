@@ -115,8 +115,16 @@ class DataFotoController extends Controller
         abort(404);
     }
 
+    public function showEntry()
+    {
+        $fotos = Foto::with('user') // Eager load the user relationship
+            ->orderBy('tgl_unggah', 'desc')
+            ->get();
     
-
+        return view('welcome', compact('fotos'));
+    }
+    
+    
     /**
      * Show the form for editing the specified resource.
      */
