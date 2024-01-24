@@ -5,6 +5,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DataFotoController;
+use App\Http\Controllers\ShowFotoController;
 use App\Http\Controllers\SSEController;
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +19,7 @@ use App\Http\Controllers\SSEController;
 */
 
 Route::get('/', [DataFotoController::class, 'showEntry'])->name('home');
+Route::get('/gambar/{filename?}', [DataFotoController::class, 'showGambar'])->name('all.foto');
 
 Route::group(['middleware' => 'guest'], function () {
      /**

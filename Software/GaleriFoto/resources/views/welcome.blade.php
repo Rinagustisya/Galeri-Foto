@@ -41,7 +41,7 @@
                 <div class="container p-3">
                     <h5 class="nama-user-h5">Nama : <b>{{ optional($foto->user)->nama_lengkap ?? 'No Name' }}</b></h5>
                     <div class="img-container">
-                        <img src="{{ route('show.foto', ['filename' => basename($foto->lokasi_file)]) }}" alt="gambar" class="img-fluid" style="height: 300px;">
+                        <img src="{{ route('all.foto', ['filename' => basename($foto->lokasi_file)]) }}" alt="gambar" class="img-fluid" style="height: 300px;">
                     </div>
                     <a href=""><i class="far fa-heart"></i></a>
                     <a href=""><i class="far fa-comments"></i></a>&nbsp;&nbsp;&nbsp;Disukai oleh...
