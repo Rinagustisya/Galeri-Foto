@@ -48,9 +48,13 @@
 <script src="/adminlte/dist/js/adminlte.min.js"></script>
 <!-- select 2 -->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<!-- sweetalert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 @stack('select2')
 @stack('like')
+@stack('sweet')
+@stack('komen')
 @stack('js')
 @include('sweetalert::alert')
 </body>

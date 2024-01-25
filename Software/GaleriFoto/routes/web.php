@@ -6,7 +6,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DataFotoController;
 use App\Http\Controllers\LikeFotoController;
-use App\Http\Controllers\SSEController;
+use App\Http\Controllers\KomenController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -64,8 +64,5 @@ Route::group(['middleware' => 'auth'], function () {
      * Like Foto
      */
     Route::post('/like-foto', [LikeFotoController::class, 'likeFoto']);
-    /**
-     * SEE server sent event
-     */
-    Route::get('/see', [SSEController::class, 'stream'])->name('sse.stream');
+    Route::post('/komen', [KomenController::class, 'store'])->name('komentar');
 });

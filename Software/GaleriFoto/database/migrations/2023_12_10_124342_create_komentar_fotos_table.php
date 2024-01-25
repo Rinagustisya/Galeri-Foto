@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('komentar_fotos', function (Blueprint $table) {
             $table->id();
             $table->text('isi_komentar');
-            $table->date('tgl_komentar');
+            $table->string('tgl_komentar');
             $table->timestamps();
         });
     }
