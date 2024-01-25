@@ -60,12 +60,12 @@
                     @endauth
                     <div class="custom-margin">
                         <p id="liked-by-text">Disukai oleh: 
-                            @foreach ($foto->likes as $like)
-                                {{ $like->user->name }}
-                                @if (!$loop->last)
-                                    ,
-                                @endif
-                            @endforeach
+                        @foreach ($foto->likes as $like)
+                            {{ $like->user->username }}
+                            @if (!$loop->last)
+                                ,
+                            @endif
+                        @endforeach
                         </p>
                     </div>
                     <div class="custom-margin">Kategori :  &nbsp;{{ $foto->album->nama_album }}</div>
@@ -87,7 +87,9 @@
             <!-- hidden -->
             @inject('carbon', 'Carbon\Carbon')
             <input type="hidden" name="tgl_komentar" id="tgl_komentar" value="{{ $carbon::now()->format('m/d/Y') }}">
+            @auth
             <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+            @endauth
             <input type="hidden" name="foto_id" value="{{ $foto->id }}">
             <!-- end hidden -->
             <textarea name="isi_komentar" id="comment" placeholder="Write your comment" cols="20" rows="5"></textarea>
@@ -115,9 +117,8 @@
                 success: function (response) {
                     console.log(response.message);
 
-                    // Perbarui teks "Disukai oleh" di dalam elemen dengan id "liked-by-text"
-                    var liked_by = response.liked_by.join(', ');
-                    $('#liked-by-text').text('Disukai oleh: ' + liked_by);
+                    var liked_by = response.liked_by.join(", "); // Add a separator
+                    $('#liked-by-text').text("Disukai oleh: " + liked_by);
 
                     button.toggleClass('liked');
                 },

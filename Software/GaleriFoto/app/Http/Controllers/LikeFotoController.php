@@ -23,7 +23,7 @@ class LikeFotoController extends Controller
         if ($existingLike) {
             // User sudah melakukan like sebelumnya, tambahkan logika untuk menghapus like jika diinginkan
             $existingLike->delete();
-            return response()->json(['message' => 'Like removed successfully']);
+            return response()->json(["message" => "Like removed successfully"]);
         }
 
         // User belum melakukan like sebelumnya, tambahkan like baru
@@ -37,8 +37,8 @@ class LikeFotoController extends Controller
         $foto = Foto::with('likes.user')->find($data['foto_id']);
 
         return response()->json([
-            'message' => 'Like added successfully',
-            'liked_by' => $foto->likes->pluck('user.name')->toArray(),
+            "message" => "Like added successfully",
+            "liked_by" => $foto->likes->pluck('user.username')->toArray(),
         ]);
     }
 }
