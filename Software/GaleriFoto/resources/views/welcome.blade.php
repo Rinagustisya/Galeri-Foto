@@ -10,21 +10,23 @@
                 </div>
                 <div class="col-4">
                 <div class="dropdown">
+                    <form action="{{ route('home') }}" method="GET">
                     <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button" id="dropdownMenuButton" data-toggle="dropdown">
                         Kategori
                     </button>
-                    <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#">Arsitektur</a>
-                        <a class="dropdown-item" href="#">Dokumenter</a>
-                        <a class="dropdown-item" href="#">Seni Rupa</a>
-                        <a class="dropdown-item" href="#">Fashion</a>
-                        <a class="dropdown-item" href="#">Olahraga</a>
-                        <a class="dropdown-item" href="#">Makanan</a>
-                        <a class="dropdown-item" href="#">Satwa Liar</a>
-                        <a class="dropdown-item" href="#">Hewan</a>
-                        <a class="dropdown-item" href="#">Laut</a>
-                        <a class="dropdown-item" href="#">Perjalanan</a>
-                    </div>
+                                <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="{{ route('home', ['category' => 'Arsitektur']) }}">Arsitektur</a>
+                                    <a class="dropdown-item" href="{{ route('home', ['category' => 'Dokumenter']) }}">Dokumenter</a>
+                                    <a class="dropdown-item" href="{{ route('home', ['category' => 'Seni Rupa']) }}">Seni Rupa</a>
+                                    <a class="dropdown-item" href="{{ route('home', ['category' => 'Fashion']) }}">Fashion</a>
+                                    <a class="dropdown-item" href="{{ route('home', ['category' => 'Olahraga']) }}">Olahraga</a>
+                                    <a class="dropdown-item" href="{{ route('home', ['category' => 'Makanan']) }}">Makanan</a>
+                                    <a class="dropdown-item" href="{{ route('home', ['category' => 'Satwa Liar']) }}">Satwa Liar</a>
+                                    <a class="dropdown-item" href="{{ route('home', ['category' => 'Hewan']) }}">Hewan</a>
+                                    <a class="dropdown-item" href="{{ route('home', ['category' => 'Laut']) }}">Laut</a>
+                                    <a class="dropdown-item" href="{{ route('home', ['category' => 'Perjalanan']) }}">Perjalanan</a>
+                                </div>
+                        </form>
                     </div>
                 </div>
             </div>

@@ -115,11 +115,18 @@ class DataFotoController extends Controller
         abort(404);
     }
 
-    public function showEntry()
+    public function showEntry(Request $request)
     {
-        $fotos = Foto::with('user') // Eager load the user relationship
-            ->orderBy('tgl_unggah', 'desc')
-            ->get();
+        $categoryFilter = $request->input('category');
+        
+        $fotos = Foto::with('user')
+        ->when($categoryFilter, function ($query) use ($categoryFilter) {
+            return $query->whereHas('album', function ($q) use ($categoryFilter) {
+                $q->where('nama_album', $categoryFilter);
+            });
+        })
+        ->orderBy('tgl_unggah', 'desc')
+        ->get();
     
         return view('welcome', compact('fotos'));
     }
