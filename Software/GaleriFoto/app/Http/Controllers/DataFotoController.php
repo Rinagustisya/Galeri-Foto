@@ -120,6 +120,7 @@ class DataFotoController extends Controller
         $categoryFilter = $request->input('category');
         
         $fotos = Foto::with('user')
+        ->where('privasi', 'Public')
         ->when($categoryFilter, function ($query) use ($categoryFilter) {
             return $query->whereHas('album', function ($q) use ($categoryFilter) {
                 $q->where('nama_album', $categoryFilter);

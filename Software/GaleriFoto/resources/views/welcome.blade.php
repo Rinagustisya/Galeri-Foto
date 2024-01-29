@@ -39,66 +39,87 @@
         <div class="card-body">
             <h3><strong>Foto Terbaru</strong></h3>
             <div class="container border p-3">
-            @foreach($fotos as $foto)
-                <div class="container p-3">
-                    <h5 class="nama-user-h5">Nama : <b>{{ optional($foto->user)->nama_lengkap ?? 'No Name' }}</b></h5>
-                    <div class="img-container">
-                        <img src="{{ route('all.foto', ['filename' => basename($foto->lokasi_file)]) }}" alt="gambar" class="img-fluid" style="height: 300px;">
+            @if(count($fotos) > 0)
+                @foreach($fotos as $foto)
+                    <div class="container p-3">
+                        <h5 class="nama-user-h5">Nama : <b>{{ optional($foto->user)->nama_lengkap ?? 'No Name' }}</b></h5>
+                        <div class="img-container">
+                            <img src="{{ route('all.foto', ['filename' => basename($foto->lokasi_file)]) }}" alt="gambar" class="img-fluid" style="height: 300px;">
+                        </div>
+                        @auth  
+                            <button class="like-button" @if($foto) data-foto-id="{{ $foto->id }}" @endif data-user-id="{{ auth()->user()->id }}">
+                                <i class="far fa-heart"></i> Like
+                            </button>
+                            <button class="comment-button" @if($foto) data-foto-id="{{ $foto->id }}" @endif data-user-id="{{ auth()->user()->id }}" onclick="commentButtonClicked()">
+                                <i class="far fa-comment"></i> Comment
+                            </button>
+                        @else
+                            <button class="like-button" onclick="likeButtonClicked()">
+                                <i class="far fa-heart"></i> Like
+                            </button>
+                            <button class="comment-button" onclick="commentButtonClicked()">
+                                <i class="far fa-comment"></i> Comment
+                            </button>
+                        @endauth
+                        <div class="custom-margin">
+                            <p id="liked-by-text">Disukai oleh: 
+                            @foreach ($foto->likes as $like)
+                                {{ $like->user->username }}
+                                @if (!$loop->last)
+                                    ,
+                                @endif
+                            @endforeach
+                            </p>
+                        </div>
+                        <div class="custom-margin">Kategori :  &nbsp;{{ $foto->album->nama_album }}</div>
+                        <div class="custom-margin">Deskripsi :  &nbsp;{{ $foto->deskripsi_foto }}</div>
                     </div>
-                    @auth  
-                        <button class="like-button" @if($foto) data-foto-id="{{ $foto->id }}" @endif data-user-id="{{ auth()->user()->id }}">
-                            <i class="fas fa-heart"></i> Like
-                        </button>
-                        <button class="comment-button" @if($foto) data-foto-id="{{ $foto->id }}" @endif data-user-id="{{ auth()->user()->id }}" onclick="commentButtonClicked()">
-                            <i class="far fa-comments"></i> Comment
-                        </button>
-                    @else
-                        <button class="like-button" onclick="likeButtonClicked()">
-                            <i class="fas fa-heart"></i> Like
-                        </button>
-                        <button class="comment-button" onclick="commentButtonClicked()">
-                            <i class="far fa-comments"></i> Comment
-                        </button>
-                    @endauth
-                    <div class="custom-margin">
-                        <p id="liked-by-text">Disukai oleh: 
-                        @foreach ($foto->likes as $like)
-                            {{ $like->user->username }}
-                            @if (!$loop->last)
-                                ,
-                            @endif
-                        @endforeach
-                        </p>
-                    </div>
-                    <div class="custom-margin">Kategori :  &nbsp;{{ $foto->album->nama_album }}</div>
-                    <div class="custom-margin">Deskripsi :  &nbsp;{{ $foto->deskripsi_foto }}</div>
-                </div>
-            @endforeach
+                @endforeach
+            @else
+                <p style="text-align: center; font-style: italic;">Tidak ada data</p>
+            @endif
+            </div>
         </div>
-    </div>
     <!-- end foto -->
     </div> 
 </div>
 
 <!-- modal -->
 <div class="comment-modal" id="commentModal">
-    <div class="modal-content">
+    <div class="modal-content small-modal">
         <span class="close" onclick="closeCommentModal()">&times;</span>
-        <h2>Comment on Photo</h2>
-        <form id="commentForm" method="POST" action="{{ route('komentar') }}">
-            <!-- hidden -->
-            @inject('carbon', 'Carbon\Carbon')
-            <input type="hidden" name="tgl_komentar" id="tgl_komentar" value="{{ $carbon::now()->format('m/d/Y') }}">
-            @auth
-            <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
-            @endauth
-            <input type="hidden" name="foto_id" value="{{ $foto->id }}">
-            <!-- end hidden -->
-            <textarea name="isi_komentar" id="comment" placeholder="Write your comment" cols="20" rows="5"></textarea>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+        <h4>Comment on Photo</h4>
+        
+        @if(count($fotos) > 0)
+            <form id="commentForm" method="POST" action="{{ route('komentar') }}">
+                @csrf
+
+                <div class="form-group">
+                    <label for="comment">Your Comment:</label>
+                    <textarea name="isi_komentar" id="comment" class="form-control" placeholder="Tulis Komentarmu..." rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+
+                <!-- hidden -->
+                @inject('carbon', 'Carbon\Carbon')
+                @auth
+                    <input type="hidden" name="tgl_komentar" value="{{ $carbon::now()->format('m/d/Y') }}">
+                    <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                    @if(count($fotos) > 0)
+                        <input type="hidden" name="foto_id" value="{{ $fotos[0]->id }}">
+                    @endif
+                @endauth
+                <!-- end hidden -->
+            </form>
+        @else
+            <p class="text-center font-italic">Tidak ada data untuk komentar</p>
+        @endif
     </div>
 </div>
+
 @endsection
 
 @push('like')
