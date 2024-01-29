@@ -121,12 +121,10 @@
                                     @else
                                         <p>Tidak ada komentar untuk foto ini.</p>
                                     @endif
-                                    </div>
                                 </div>
                             </div>
                         </div>
                         <!-- end input 4 -->
-                        <div>
                         <button type="submit" class="btn btn-success btn-block">Simpan Perubahan</button>
                 </div>
             </div>
