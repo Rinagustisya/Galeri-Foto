@@ -83,7 +83,7 @@ class DataFotoController extends Controller
      */
     public function show(int $id)
     {
-        $data = Foto::find($id);
+        $data = Foto::with('komentar.user')->find($id);
         $album = Album::find($data->album_id);
 
         if ($album) {

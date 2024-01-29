@@ -33,4 +33,9 @@ class Foto extends Model
     {
         return $this->hasMany(LikeFoto::class);
     }
+    
+    public function komentar()
+    {
+        return $this->hasMany(KomentarFoto::class, 'foto_id');
+    }
 }
