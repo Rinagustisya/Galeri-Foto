@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('judul_foto');
             $table->text('deskripsi_foto');
-            $table->date('tgl_unggah');
+            $table->datetime('tgl_unggah');
             $table->string('lokasi_file');
             $table->timestamps();
         });

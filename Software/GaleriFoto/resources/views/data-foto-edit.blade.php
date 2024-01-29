@@ -94,36 +94,6 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- table -->
-                        <div class="card col-12">
-                            <div class="row">
-                                <div class="card-body">
-                                <h4>Daftar Komentar</h4>
-                                    @if(count($data->komentar) > 0)
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>User</th>
-                                                    <th>Tanggal Komentar</th>
-                                                    <th>Isi Komentar</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach($data->komentar as $komentar)
-                                                    <tr>
-                                                        <td>{{ $komentar->user->username }}</td>
-                                                        <td>{{ $komentar->tgl_komentar }}</td>
-                                                        <td>{{ $komentar->isi_komentar }}</td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    @else
-                                        <p>Tidak ada komentar untuk foto ini.</p>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
                         <!-- end input 4 -->
                         <button type="submit" class="btn btn-success btn-block">Simpan Perubahan</button>
                 </div>

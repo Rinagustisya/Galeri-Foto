@@ -1,7 +1,25 @@
 .jumbotron {
   padding-top: 5rem;
 }
-/* Add your styles for the comment modal */
+.komentar-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.komentar-title {
+  font-weight: bold;
+}
+
+.custom-ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.comments-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .comment-modal {
   display: none;
   position: fixed;

@@ -26,6 +26,7 @@ class DataFotoController extends Controller
                     ->orWhere('fotos.judul_foto', 'like', "%{$search}%")
                     ->orWhere('users.nama_lengkap', 'like', "%{$search}%");
             })
+            ->orderBy('tgl_unggah','desc')
             ->paginate(5);
 
         return view('data-foto', ['data' => $data]);
@@ -118,17 +119,17 @@ class DataFotoController extends Controller
     public function showEntry(Request $request)
     {
         $categoryFilter = $request->input('category');
-        
-        $fotos = Foto::with('user')
-        ->where('privasi', 'Public')
-        ->when($categoryFilter, function ($query) use ($categoryFilter) {
-            return $query->whereHas('album', function ($q) use ($categoryFilter) {
-                $q->where('nama_album', $categoryFilter);
-            });
-        })
-        ->orderBy('tgl_unggah', 'desc')
-        ->get();
-    
+
+        $fotos = Foto::with(['user', 'komentar'])
+            ->where('privasi', 'Public')
+            ->when($categoryFilter, function ($query) use ($categoryFilter) {
+                return $query->whereHas('album', function ($q) use ($categoryFilter) {
+                    $q->where('nama_album', $categoryFilter);
+                });
+            })
+            ->orderBy('tgl_unggah', 'desc')
+            ->get();
+
         return view('welcome', compact('fotos'));
     }
     
