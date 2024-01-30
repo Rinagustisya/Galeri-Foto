@@ -140,36 +140,48 @@
 
 @push('like')
 <script>
+    @auth
     $(document).ready(function () {
-    $('.like-button').on('click', function () {
-        var fotoId = $(this).data('foto-id');
-        var userId = $(this).data('user-id');
-        var button = $(this);
-        var isLiked = button.hasClass('liked');
+        $('.like-button').on('click', function () {
+            var fotoId = $(this).data('foto-id');
+            var userId = $(this).data('user-id');
+            var button = $(this);
+            var isLiked = button.hasClass('liked');
 
-        @auth
-        var likedByText = "Disukai oleh: " + (isLiked ? "" : "{{ auth()->user()->username }}");
-        $(`#container-${fotoId} .liked-by-text`).text(likedByText);
-        button.toggleClass('liked', !isLiked);
-        @endauth
+            $.ajax({
+                type: 'POST',
+                url: '/like-foto',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    foto_id: fotoId,
+                    user_id: userId,
+                    unlike: isLiked
+                },
+                success: function (response) {
+                    console.log(response.message);
 
-        $.ajax({
-            type: 'POST',
-            url: '/like-foto',
-            data: {
-                foto_id: fotoId,
-                user_id: userId,
-                unlike: isLiked
-            },
-            success: function (response) {
-                console.log(response.message);
-            },
-            error: function (error) {
-                console.error('Error:', error);
-            }
+                    button.toggleClass('liked', !isLiked);
+
+                    var likedByUsers = response.liked_by;
+                    var currentUserID = '{{ auth()->id() }}';
+
+                    var userHasLiked = likedByUsers.includes(currentUserID);
+                    var likedByText;
+                    if (isLiked && userHasLiked) {
+                        likedByText = "Disukai oleh: " + (likedByUsers ? likedByUsers.join(', ') : "Tidak ada suka");
+                    } else {
+                        likedByText = "Disukai oleh: " + (userHasLiked ? "{{ auth()->user()->username }}" : "");
+                    }
+
+                    $(`#container-${fotoId} .liked-by-text`).text(likedByText);
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                }
+            });
         });
-    });
 });
+@endauth
 </script>
 @endpush
 
