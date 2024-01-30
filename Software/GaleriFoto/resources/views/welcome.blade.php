@@ -25,6 +25,7 @@
                                     <a class="dropdown-item" href="{{ route('home', ['category' => 'Hewan']) }}">Hewan</a>
                                     <a class="dropdown-item" href="{{ route('home', ['category' => 'Laut']) }}">Laut</a>
                                     <a class="dropdown-item" href="{{ route('home', ['category' => 'Perjalanan']) }}">Perjalanan</a>
+                                    <a class="dropdown-item" href="">Lainnya</a>
                                 </div>
                         </form>
                     </div>
@@ -42,7 +43,12 @@
             @if(count($fotos) > 0)
                 @foreach($fotos as $foto)
                     <div class="container p-3" id="container-{{ $foto->id }}">
-                        <h5 class="nama-user-h5"><b>{{ optional($foto->user)->nama_lengkap ?? 'No Name' }}</b></h5>
+                            <h5 class="nama-user-h5" style="position: relative;">
+                                <b>{{ optional($foto->user)->nama_lengkap ?? 'No Name' }}</b>
+                                <span class="badge badge-pill badge-info" style="position: absolute; top: 0; right: 0;">
+                                    {{ $foto->album->nama_album }}
+                                </span>
+                            </h5>
                         <div class="img-container">
                             <img src="{{ route('all.foto', ['filename' => basename($foto->lokasi_file)]) }}" alt="gambar" class="img-fluid" style="height: 300px;">
                         </div>
@@ -73,7 +79,6 @@
                         </div>
                         <div class="custom-margin"><b>{{ $foto->judul_foto }}</b></div>
                         <div class="custom-margin">{{ $foto->deskripsi_foto }}</div>
-                        <div class="custom-margin"><span class="badge badge-pill badge-info">{{ $foto->album->nama_album }}</span></div>
                             <div id="container-{{ $foto->id }}" class="custom-margin">
                                 <div class="komentar-container">
                                     <span class="komentar-title">Komentar:</span>
@@ -136,34 +141,35 @@
 @push('like')
 <script>
     $(document).ready(function () {
-        $('.like-button').on('click', function () {
-            var fotoId = $(this).data('foto-id');
-            var userId = $(this).data('user-id');
-            var button = $(this);
-            var isLiked = button.hasClass('liked');
+    $('.like-button').on('click', function () {
+        var fotoId = $(this).data('foto-id');
+        var userId = $(this).data('user-id');
+        var button = $(this);
+        var isLiked = button.hasClass('liked');
 
-            button.toggleClass('liked', !isLiked);
+        @auth
+        var likedByText = "Disukai oleh: " + (isLiked ? "" : "{{ auth()->user()->username }}");
+        $(`#container-${fotoId} .liked-by-text`).text(likedByText);
+        button.toggleClass('liked', !isLiked);
+        @endauth
 
-            var likedByText = "Disukai oleh: " + (isLiked ? "" : "{{ auth()->user()->username }}");
-            $(`#container-${fotoId} .liked-by-text`).text(likedByText);
-
-            $.ajax({
-                type: 'POST',
-                url: '/like-foto',
-                data: {
-                    foto_id: fotoId,
-                    user_id: userId,
-                    unlike: isLiked
-                },
-                success: function (response) {
-                    console.log(response.message);
-                },
-                error: function (error) {
-                    console.error('Error:', error);
-                }
-            });
+        $.ajax({
+            type: 'POST',
+            url: '/like-foto',
+            data: {
+                foto_id: fotoId,
+                user_id: userId,
+                unlike: isLiked
+            },
+            success: function (response) {
+                console.log(response.message);
+            },
+            error: function (error) {
+                console.error('Error:', error);
+            }
         });
     });
+});
 </script>
 @endpush
 

@@ -30,6 +30,7 @@
                            <option value="Hewan">Hewan</option>
                            <option value="Laut">Laut</option>
                            <option value="Perjalanan">Perjalanan</option>
+                           <option value="Lainnya">Lainnya</option>
                         </select>
                         @if ($errors->has('nama_album'))
                            <span class="text-danger text-left">{{ $errors->first('nama_album') }}</span>
@@ -38,6 +39,14 @@
                </div>
             </div>
             <!-- end select -->
+            <div class="card col-12">
+               <div class="row">
+                  <div class="card-body">
+
+                  </div>
+               </div>
+            </div>
+            <!-- form lainnya  -->
             <div class="card col-12">
                   <div class="row">
                      <div class="card-body">
