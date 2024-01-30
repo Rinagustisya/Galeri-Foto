@@ -79,16 +79,6 @@
                         </div>
                         <div class="custom-margin"><b>{{ $foto->judul_foto }}</b></div>
                         <div class="custom-margin">{{ $foto->deskripsi_foto }}</div>
-                            <div id="container-{{ $foto->id }}" class="custom-margin">
-                                <div class="komentar-container">
-                                    <span class="komentar-title">Komentar:</span>
-                                    <ul class="custom-ul">
-                                        @foreach($foto->komentar as $comment)
-                                            <li>{{ $comment->user->username }}:&ensp;{{ $comment->isi_komentar }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            </div>
                     </div>
                 @endforeach
             @else
@@ -130,6 +120,16 @@
                 @endauth
                 <!-- end hidden -->
             </form>
+            <div id="container-{{ $foto->id }}" class="custom-margin">
+                    <div class="komentar-container">
+                        <span class="komentar-title">Komentar:</span>
+                            <ul class="custom-ul">
+                                @foreach($foto->komentar as $comment)
+                                    <li>{{ $comment->user->username }}:&ensp;{{ $comment->isi_komentar }}</li>
+                                @endforeach
+                            </ul>
+                    </div>
+            </div>
         @else
             <p class="text-center font-italic">Tidak ada data untuk komentar</p>
         @endif
