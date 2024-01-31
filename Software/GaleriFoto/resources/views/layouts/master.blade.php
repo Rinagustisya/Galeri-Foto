@@ -58,6 +58,7 @@
 @stack('js')
 @stack('daftar-komen')
 @stack('kategori')
+@stack('input-kategori')
 @include('sweetalert::alert')
 </body>
 </html>

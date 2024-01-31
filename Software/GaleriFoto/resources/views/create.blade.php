@@ -18,31 +18,32 @@
             <div class="card col-12">
             <div class="row">
                <div class="card-body">
-                     <label for="nama_album">Pilih Kategori Foto</label>
-                        <select name="nama_album" id="nama_album" class="form-control">
-                           <option value="Arsitektur">Arsitektur</option>
-                           <option value="Dokumenter">Dokumenter</option>
-                           <option value="Seni rupa">Seni Rupa</option>
-                           <option value="Fashion">Fashion</option>
-                           <option value="Olahraga">Olahraga</option>
-                           <option value="Makanan">Makanan</option>
-                           <option value="Satwa liar">Satwa Liar</option>
-                           <option value="Hewan">Hewan</option>
-                           <option value="Laut">Laut</option>
-                           <option value="Perjalanan">Perjalanan</option>
-                           <option value="Lainnya">Lainnya</option>
-                        </select>
-                        @if ($errors->has('nama_album'))
-                           <span class="text-danger text-left">{{ $errors->first('nama_album') }}</span>
-                        @endif
+               <label for="nama_album">Pilih Kategori Foto</label>
+                  <select name="nama_album" id="nama_album" class="form-control" required="{{ old('nama_album') == 'Lainnya' ? '' : 'required' }}">
+                     <option value="Arsitektur" {{ old('nama_album') == 'Arsitektur' ? 'selected' : '' }}>Arsitektur</option>
+                     <option value="Dokumenter" {{ old('nama_album') == 'Dokumenter' ? 'selected' : '' }}>Dokumenter</option>
+                     <option value="Seni rupa" {{ old('nama_album') == 'Seni rupa' ? 'selected' : '' }}>Seni Rupa</option>
+                     <option value="Fashion" {{ old('nama_album') == 'Fashion' ? 'selected' : '' }}>Fashion</option>
+                     <option value="Olahraga" {{ old('nama_album') == 'Olahraga' ? 'selected' : '' }}>Olahraga</option>
+                     <option value="Makanan" {{ old('nama_album') == 'Makanan' ? 'selected' : '' }}>Makanan</option>
+                     <option value="Satwa liar" {{ old('nama_album') == 'Satwa liar' ? 'selected' : '' }}>Satwa Liar</option>
+                     <option value="Hewan" {{ old('nama_album') == 'Hewan' ? 'selected' : '' }}>Hewan</option>
+                     <option value="Laut" {{ old('nama_album') == 'Laut' ? 'selected' : '' }}>Laut</option>
+                     <option value="Perjalanan" {{ old('nama_album') == 'Perjalanan' ? 'selected' : '' }}>Perjalanan</option>
+                     <option value="Lainnya" {{ old('nama_album') == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
+                  </select>
+                  @if ($errors->has('nama_album'))
+                     <span class="text-danger text-left">{{ $errors->first('nama_album') }}</span>
+                  @endif
                   </div>
                </div>
             </div>
             <!-- end select -->
-            <div class="card col-12">
+            <div class="card col-12" id="kategori_lainnya" style="display: none;">
                <div class="row">
                   <div class="card-body">
-
+                        <label for="kategori_lainnya">Kategori Lainnya</label>
+                        <input type="text" name="kategori_lainnya" id="kategori_lainnya_input" class="form-control" required="{{ old('nama_album') == 'Lainnya' && old('kategori_lainnya') ? 'required' : '' }}" placeholder="Masukan Kategori Lainnya...">
                   </div>
                </div>
             </div>
@@ -113,18 +114,36 @@
    </div>
 </div>
 
-<!-- <script>
-      document.addEventListener('DOMContentLoaded', function () {
-         const form = document.getElementById('data-gambar-form');
-
-         form.addEventListener('submit', function (event) {
-               // Get the current date and time in the desired format
-               const currentDate = new Date();
-               const formattedDate = currentDate.toISOString().slice(0, 19).replace('T', ' ');
-
-               // Set the value of the hidden input field 'tgl_unggah' with the formatted date
-               document.getElementById('tgl_unggah').value = formattedDate;
-         });
-      });
-</script> -->
 @endsection
+
+@push('input-kategori')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const namaAlbumSelect = document.getElementById('nama_album');
+        const kategoriLainnyaInput = document.getElementById('kategori_lainnya');
+        const kategoriLainnyaContainer = document.getElementById('kategori_lainnya');
+
+        namaAlbumSelect.addEventListener('change', function () {
+         if (this.value === 'Lainnya') {
+               kategoriLainnyaInput.required = true;
+               kategoriLainnyaContainer.style.display = 'block';
+               kategoriLainnyaInput.name = 'nama_album'; 
+            } else {
+               kategoriLainnyaInput.required = false;
+               kategoriLainnyaContainer.style.display = 'none';
+               kategoriLainnyaInput.name = 'lainnya';
+            }
+        });
+
+        if (namaAlbumSelect.value === 'Lainnya') {
+            kategoriLainnyaInput.required = true;
+            kategoriLainnyaContainer.style.display = 'block';
+            kategoriLainnyaInput.name = 'nama_album';
+        } else {
+            kategoriLainnyaInput.required = false;
+            kategoriLainnyaContainer.style.display = 'none';
+            kategoriLainnyaInput.name = 'lainnya';
+        }
+    });
+</script>
+@endpush

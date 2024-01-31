@@ -25,7 +25,7 @@
                             <a class="dropdown-item" href="#" data-category="Hewan">Hewan</a>
                             <a class="dropdown-item" href="#" data-category="Laut">Laut</a>
                             <a class="dropdown-item" href="#" data-category="Perjalanan">Perjalanan</a>
-                            <a class="dropdown-item" href="#">Lainnya</a>
+                            <a class="dropdown-item" href="#" data-category="Lainnya">Lainnya</a>
                         </div>
                         <input type="hidden" name="category" id="selectedCategory" value="">
                     </form>

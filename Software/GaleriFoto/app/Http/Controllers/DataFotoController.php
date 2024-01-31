@@ -46,9 +46,10 @@ class DataFotoController extends Controller
      */
     public function store(Request $request)
     {
+        $nama_album = $request->input('nama_album');
          // Validate the form data
          $request->validate([
-            'nama_album' => 'required|in:Arsitektur,Dokumenter,Seni rupa,Fashion,Olahraga,Makanan,Satwa liar,Hewan,Laut,Perjalanan',
+            'nama_album' => 'required|in:Arsitektur,Dokumenter,Seni rupa,Fashion,Olahraga,Makanan,Satwa liar,Hewan,Laut,Perjalanan,Lainnya',
             'judul_foto' => 'required|string|max:255',
             'privasi' => 'required|in:Public,Private',
             'deskripsi_foto' => 'nullable|string',
