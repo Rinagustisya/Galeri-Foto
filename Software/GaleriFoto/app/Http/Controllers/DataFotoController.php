@@ -120,7 +120,7 @@ class DataFotoController extends Controller
     {
         $categoryFilter = $request->input('category');
 
-        $fotos = Foto::with(['user', 'komentar'])
+        $fotos = Foto::with(['user', 'komentar', 'album'])
             ->where('privasi', 'Public')
             ->when($categoryFilter, function ($query) use ($categoryFilter) {
                 return $query->whereHas('album', function ($q) use ($categoryFilter) {
@@ -130,10 +130,9 @@ class DataFotoController extends Controller
             ->orderBy('tgl_unggah', 'desc')
             ->get();
 
-        return view('welcome', compact('fotos'));
+        return view('welcome', compact('fotos', 'categoryFilter'));
     }
-    
-    
+
     /**
      * Show the form for editing the specified resource.
      */

@@ -10,25 +10,25 @@
                 </div>
                 <div class="col-4">
                 <div class="dropdown">
-                    <form action="{{ route('home') }}" method="GET">
-                    <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button" id="dropdownMenuButton" data-toggle="dropdown">
-                        Kategori
-                    </button>
-                                <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item" href="{{ route('home', ['category' => 'Arsitektur']) }}">Arsitektur</a>
-                                    <a class="dropdown-item" href="{{ route('home', ['category' => 'Dokumenter']) }}">Dokumenter</a>
-                                    <a class="dropdown-item" href="{{ route('home', ['category' => 'Seni Rupa']) }}">Seni Rupa</a>
-                                    <a class="dropdown-item" href="{{ route('home', ['category' => 'Fashion']) }}">Fashion</a>
-                                    <a class="dropdown-item" href="{{ route('home', ['category' => 'Olahraga']) }}">Olahraga</a>
-                                    <a class="dropdown-item" href="{{ route('home', ['category' => 'Makanan']) }}">Makanan</a>
-                                    <a class="dropdown-item" href="{{ route('home', ['category' => 'Satwa Liar']) }}">Satwa Liar</a>
-                                    <a class="dropdown-item" href="{{ route('home', ['category' => 'Hewan']) }}">Hewan</a>
-                                    <a class="dropdown-item" href="{{ route('home', ['category' => 'Laut']) }}">Laut</a>
-                                    <a class="dropdown-item" href="{{ route('home', ['category' => 'Perjalanan']) }}">Perjalanan</a>
-                                    <a class="dropdown-item" href="">Lainnya</a>
-                                </div>
-                        </form>
-                    </div>
+                    <form action="{{ route('home') }}" method="GET" id="categoryForm">
+                        <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button" id="dropdownMenuButton" data-toggle="dropdown">
+                            Kategori
+                        </button>
+                        <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="#" data-category="Arsitektur">Arsitektur</a>
+                            <a class="dropdown-item" href="#" data-category="Dokumenter">Dokumenter</a>
+                            <a class="dropdown-item" href="#" data-category="Seni Rupa">Seni Rupa</a>
+                            <a class="dropdown-item" href="#" data-category="Fashion">Fashion</a>
+                            <a class="dropdown-item" href="#" data-category="Olahraga">Olahraga</a>
+                            <a class="dropdown-item" href="#" data-category="Makanan">Makanan</a>
+                            <a class="dropdown-item" href="#" data-category="Satwa Liar">Satwa Liar</a>
+                            <a class="dropdown-item" href="#" data-category="Hewan">Hewan</a>
+                            <a class="dropdown-item" href="#" data-category="Laut">Laut</a>
+                            <a class="dropdown-item" href="#" data-category="Perjalanan">Perjalanan</a>
+                            <a class="dropdown-item" href="#">Lainnya</a>
+                        </div>
+                        <input type="hidden" name="category" id="selectedCategory" value="">
+                    </form>
                 </div>
             </div>
         </div>
@@ -276,6 +276,29 @@
                 }
             });
         });
+    });
+</script>
+@endpush
+
+@push('kategori')
+<script>
+$(document).ready(function () {
+    $('.dropdown-item').click(function (e) {
+        e.preventDefault();
+        var selectedCategory = $(this).data('category');
+        console.log('Selected Category:', selectedCategory);
+        $('#dropdownMenuButton').text(selectedCategory);
+        $('#selectedCategory').val(selectedCategory);
+        $('#categoryForm').submit();
+    });
+});
+
+$(document).ready(function () {
+        var categoryFilter = '{{ $categoryFilter }}';
+        if (categoryFilter) {
+            $('#dropdownMenuButton').text(categoryFilter);
+            $('#selectedCategory').val(categoryFilter);
+        }
     });
 </script>
 @endpush
