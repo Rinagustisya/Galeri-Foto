@@ -46,7 +46,7 @@
                             <h5 class="nama-user-h5" style="position: relative;">
                                 <b>{{ optional($foto->user)->nama_lengkap ?? 'No Name' }}</b>
                                 <span class="badge badge-pill badge-info" style="position: absolute; top: 0; right: 0;">
-                                    {{ $foto->album->nama_album }}
+                                    {{ $foto->album->nama_album === 'Lainnya' ? $foto->album->custom_category : $foto->album->nama_album }}
                                 </span>
                             </h5>
                         <div class="img-container">
@@ -166,7 +166,6 @@
                     var currentUserID = '{{ auth()->id() }}';
 
                     var userHasLiked = likedByUsers.includes(currentUserID);
-                    var likedByText;
                     var likedByText = "Disukai oleh: " + (likedByUsers.length>0 ? likedByUsers.join(', ') : "-");
 
                     $(`#container-${fotoId} .liked-by-text`).text(likedByText);

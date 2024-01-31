@@ -29,7 +29,13 @@
                             @foreach ( $data as $row ) 
                             <tr>
                                 <td>{{ $no++ }}</td>
-                                <td>{{ $row->nama_album }}</td>
+                                <td>
+                                    @if ($row->nama_album == 'Lainnya')
+                                        {{ $row->custom_category }}
+                                    @else
+                                        {{ $row->nama_album }}
+                                    @endif
+                                </td>
                                 <td>{{ $row->nama_lengkap }}</td>
                                 <td>{{ $row->judul_foto }}</td>
                                 <td>{{ $row->deskripsi_foto }}</td>

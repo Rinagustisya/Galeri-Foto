@@ -11,6 +11,7 @@ class Album extends Model
 
     protected $fillable = [
         'nama_album',
+        'custom_category',
         'Deskripsi',
         'tgl_buat',
         'user_id'

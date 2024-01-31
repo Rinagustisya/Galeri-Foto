@@ -40,6 +40,7 @@
                                         <option value="Hewan" {{ $data->nama_album == 'Hewan' ? 'selected' : '' }}>Hewan</option>
                                         <option value="Laut" {{ $data->nama_album == 'Laut' ? 'selected' : '' }}>Laut</option>
                                         <option value="Perjalanan" {{ $data->nama_album == 'Perjalanan' ? 'selected' : '' }}>Perjalanan</option>
+                                        <option value="Lainnya" {{ $data->nama_album == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
                                     </select>
                                     @if ($errors->has('nama_album'))
                                     <span class="text-danger text-left">{{ $errors->first('nama_album') }}</span>
@@ -48,6 +49,17 @@
                             </div>
                         </div>
                         <!-- end input 2 -->
+                        <div class="card col-12" id="kategori_lainnya">
+                            <div class="row">
+                                <div class="card-body">
+                                    <label for="custom_category">Kategori Lainnya</label>
+                                    <input type="text" class="form-control" id="custom_category" name="custom_category" value="{{ $data->album->custom_category }}">
+                                    @if ($errors->has('custom_category'))
+                                        <span class="text-danger text-left">{{ $errors->first('custom_category') }}</span>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
                         <div class="card col-12">
                             <div class="row">
                                 <div class="card-body">

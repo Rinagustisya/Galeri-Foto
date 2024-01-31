@@ -17,17 +17,17 @@ class DataFotoController extends Controller
     public function index(Request $request)
     {
         $search = $request->search;
-        $data = Foto::select('fotos.id', 'fotos.judul_foto', 'fotos.deskripsi_foto', 'fotos.lokasi_file', 'fotos.privasi', 'albums.nama_album', 'users.nama_lengkap')
-            ->join('albums', 'fotos.album_id', '=', 'albums.id')
-            ->join('users', 'fotos.user_id', '=', 'users.id')
-            ->where('fotos.user_id', auth()->id())
-            ->when($search, function ($query, $search) {
-                return $query->where('albums.nama_album', 'like', "%{$search}%")
-                    ->orWhere('fotos.judul_foto', 'like', "%{$search}%")
-                    ->orWhere('users.nama_lengkap', 'like', "%{$search}%");
-            })
-            ->orderBy('tgl_unggah','desc')
-            ->paginate(5);
+        $data = Foto::select('fotos.id', 'fotos.judul_foto', 'fotos.deskripsi_foto', 'fotos.lokasi_file', 'fotos.privasi', 'albums.nama_album', 'albums.custom_category', 'users.nama_lengkap')
+        ->join('albums', 'fotos.album_id', '=', 'albums.id')
+        ->join('users', 'fotos.user_id', '=', 'users.id')
+        ->where('fotos.user_id', auth()->id())
+        ->when($search, function ($query, $search) {
+            return $query->where('albums.nama_album', 'like', "%{$search}%")
+                ->orWhere('fotos.judul_foto', 'like', "%{$search}%")
+                ->orWhere('users.nama_lengkap', 'like', "%{$search}%");
+        })
+        ->orderBy('tgl_unggah', 'desc')
+        ->paginate(5);
 
         return view('data-foto', ['data' => $data]);
 
@@ -60,6 +60,11 @@ class DataFotoController extends Controller
         $user = Auth::user();
 
         $album = Album::firstOrCreate(['nama_album' => $request->nama_album]);
+
+        if ($request->nama_album === 'Lainnya') {
+            $album->update(['custom_category' => $request->kategori_lainnya]);
+        }
+
         $request->merge(['album_id' => $album->id]);
 
          //upload image
@@ -89,8 +94,11 @@ class DataFotoController extends Controller
         $album = Album::find($data->album_id);
 
         if ($album) {
-            $albums = Album::where('nama_album', $album->nama_album)->pluck('nama_album')->unique();
-            
+            $albums = Album::where('nama_album', $album->nama_album)
+                ->orWhere('nama_album', 'custom_category')
+                ->pluck('nama_album')
+                ->unique();
+
             return view('data-foto-edit', [
                 'data' => $data,
                 'albums' => $albums,
@@ -99,6 +107,7 @@ class DataFotoController extends Controller
             return redirect()->route('data-foto')->with('error', 'Data Not Found!');
         }
     }
+
 
     public function showGambar($filename = null)
     {
