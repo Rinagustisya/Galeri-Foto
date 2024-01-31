@@ -27,4 +27,13 @@ class KomenController extends Controller
         Alert::success('Sukses!', 'Komentar Anda Berhasil Dikirim!');
         return redirect()->route('home');
     }
+
+    public function getComments(Request $request)
+    {
+
+        $fotoId = $request->input('foto_id');
+        $comments = KomentarFoto::where('foto_id', $fotoId)->get();
+
+        return response()->json(['comments' => $comments]);
+    }
 }
