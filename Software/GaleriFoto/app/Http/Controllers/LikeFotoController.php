@@ -21,7 +21,15 @@ class LikeFotoController extends Controller
 
         if ($existingLike) {
             $existingLike->delete();
-            return response()->json(["message" => "Like removed successfully"]);
+            
+            $foto = Foto::with("likes.user")->find($data['foto_id']);
+            
+            return response()->json(
+                [
+                    "message" => "Like removed successfully",
+                    "liked_by" => $foto->likes->pluck('user.username')->toArray(),
+                ]
+            );
         }
 
         $like = LikeFoto::create([

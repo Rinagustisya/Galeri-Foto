@@ -167,11 +167,7 @@
 
                     var userHasLiked = likedByUsers.includes(currentUserID);
                     var likedByText;
-                    if (isLiked && userHasLiked) {
-                        likedByText = "Disukai oleh: " + (likedByUsers ? likedByUsers.join(', ') : "Tidak ada suka");
-                    } else {
-                        likedByText = "Disukai oleh: " + (userHasLiked ? "{{ auth()->user()->username }}" : "");
-                    }
+                    var likedByText = "Disukai oleh: " + (likedByUsers.length>0 ? likedByUsers.join(', ') : "-");
 
                     $(`#container-${fotoId} .liked-by-text`).text(likedByText);
                 },
