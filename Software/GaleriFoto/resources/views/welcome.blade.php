@@ -95,8 +95,8 @@
     <div class="modal-content small-modal">
         <span class="close" onclick="closeCommentModal()">&times;</span>
              <h4>Comment on Photo</h4>
-                <div id="container-{{ $foto->id }}" class="custom-margin">
-                    <form id="commentForm-{{ $foto->id }}" method="POST" action="{{ route('komentar') }}">
+                <div id="container" class="custom-margin">
+                    <form id="commentForm" method="POST" action="{{ route('komentar') }}">
                     <div class="form-group">
                         <label for="comment">Your Comment:</label>
                         <textarea name="isi_komentar" id="comment" class="form-control" placeholder="Tulis Komentarmu..." rows="3"></textarea>
@@ -106,36 +106,85 @@
                     @auth
                         <input type="hidden" name="tgl_komentar" value="{{ $carbon::now()->format('m/d/Y') }}">
                         <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
-                        <input type="hidden" name="foto_id" value="{{ $foto->id }}">
+                        <input type="hidden" name="foto_id" id="foto_id" value="">
                     @endauth
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
                     </form>
                 </div>
-            <div id="container-{{ $foto->id }}" class="custom-margin">
+            <div id="container" class="custom-margin">
                 <div class="komentar-container">
                     <span class="komentar-title">Komentar:</span>
-                        <ul class="custom-ul" id="comments-container-{{ $foto->id }}" class="comments-container">
+                        <ul class="custom-ul" id="comments-container" class="comments-container">
                         </ul>
-                        </div>
+                    </div>
                 </div>
             </div>  
     </div>
 </div>
 @endsection
 
-@push('like')
+@push('komen')
 <script>
-    @auth
-    $(document).ready(function () {
-        $('.like-button').on('click', function () {
-            var fotoId = $(this).data('foto-id');
-            var userId = $(this).data('user-id');
-            var button = $(this);
-            var isLiked = button.hasClass('liked');
+        function openCommentModal(fotoId) {
+            var commentModal = document.getElementById('commentModal');
+            if (commentModal) {
+                commentModal.style.display = 'block';
+                var fotoIdInput = document.getElementById('foto_id');
+                if (fotoIdInput) {
+                    fotoIdInput.value = fotoId;
+                }
+                var commentForm = document.getElementById('commentForm');
+                if (commentForm) {
+                    commentForm.querySelector('#comment').focus();
+                }
+                fetchComments(fotoId);
+            }
+        }
 
-            $.ajax({
+        function closeCommentModal() {
+            var commentModal = document.getElementById('commentModal');
+            if (commentModal) {
+                commentModal.style.display = 'none';
+            }
+        }
+
+        function fetchComments(fotoId) {
+            var commentsContainer = document.getElementById('comments-container');
+            if (commentsContainer) {
+                fetch('/get-comments?foto_id=' + fotoId)
+                    .then(response => response.json())
+                    .then(data => {
+                        commentsContainer.innerHTML = '';
+                        if (data.comments.length > 0) {
+                            data.comments.forEach(comment => {
+                                commentsContainer.innerHTML += '<li>' + comment.user.username + ': ' + comment.isi_komentar + '</li>';
+                            });
+                        } else {
+                            commentsContainer.innerHTML = '<p>No comments for this photo.</p>';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching comments:', error);
+                    });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+        @auth
+        var fotoId = event.target.dataset.fotoId;
+            if (fotoId !== undefined) {
+                openCommentModal(fotoId);
+            }
+
+            if (event.target.classList.contains('like-button')) {
+                var fotoId = event.target.dataset.fotoId;
+                var userId = event.target.dataset.userId;
+                var button = event.target;
+                var isLiked = button.classList.contains('liked');
+
+                $.ajax({
                 type: 'POST',
                 url: '/like-foto',
                 data: {
@@ -160,10 +209,18 @@
                 error: function (error) {
                     console.error('Error:', error);
                 }
+                });
+                event.preventDefault();
+            }
+        @endauth
+
+        var closeButton = document.querySelector('.comment-modal .close');
+        if (closeButton) {
+            closeButton.addEventListener('click', function () {
+                closeCommentModal();
             });
-        });
-});
-@endauth
+        }
+    });
 </script>
 @endpush
 
@@ -204,68 +261,6 @@
             });
         @endauth
     }
-</script>
-@endpush
-
-@push('komen')
-<script>
-    function commentButtonClicked(fotoId) {
-    @auth
-        openCommentModal(fotoId);
-    @endauth
-    }
-
-    function openCommentModal(fotoId) {
-    var commentModal = document.getElementById('commentModal');
-    if (commentModal) {
-        commentModal.style.display = 'block';
-        var commentForm = document.getElementById('commentForm-' + fotoId);
-            if (commentForm) {
-                commentForm.querySelector('#comment').focus();
-            }
-        }
-    }
-
-    function closeCommentModal() {
-        var commentModal = document.getElementById('commentModal');
-        if (commentModal) {
-            commentModal.style.display = 'none';
-        }
-    }
-</script>
-@endpush
-
-@push('daftar-komen')
-<script>
-$(document).ready(function () {
-    @foreach($fotos as $foto)
-        fetchComments({{ $foto->id }});
-    @endforeach
-
-    function fetchComments(fotoId) {
-        $.ajax({
-            type: 'GET',
-            url: '/get-comments',
-            data: {
-                foto_id: fotoId
-            },
-            success: function (response) {
-                var commentsContainer = $('#comments-container-' + fotoId);
-                commentsContainer.empty();
-                if (response.comments.length > 0) {
-                    $.each(response.comments, function (index, comment) {
-                        commentsContainer.append('<li>' + comment.user.username + ': ' + comment.isi_komentar + '</li>');
-                    });
-                } else {
-                    commentsContainer.append('<p>No comments for this photo.</p>');
-                }
-            },
-            error: function (error) {
-                console.error('Error fetching comments:', error);
-            }
-        });
-    }
-});
 </script>
 @endpush
 
