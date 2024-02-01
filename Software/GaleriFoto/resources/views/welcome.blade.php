@@ -94,48 +94,35 @@
 <div class="comment-modal" id="commentModal">
     <div class="modal-content small-modal">
         <span class="close" onclick="closeCommentModal()">&times;</span>
-        <h4>Comment on Photo</h4>
-        
-        @if(count($fotos) > 0)
-            <form id="commentForm" method="POST" action="{{ route('komentar') }}">
-                @csrf
-
-                <div class="form-group">
-                    <label for="comment">Your Comment:</label>
-                    <textarea name="isi_komentar" id="comment" class="form-control" placeholder="Tulis Komentarmu..." rows="3"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-
-                <!-- hidden -->
-                @inject('carbon', 'Carbon\Carbon')
-                @auth
-                    <input type="hidden" name="tgl_komentar" value="{{ $carbon::now()->format('m/d/Y') }}">
-                    <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
-                    @if(count($fotos) > 0)
-                        <input type="hidden" name="foto_id" value="{{ $fotos[0]->id }}">
-                    @endif
-                @endauth
-                <!-- end hidden -->
-            </form>
-            <div id="container-{{ $foto->id }}" class="custom-margin">
-                    <div class="komentar-container">
-                        <span class="komentar-title">Komentar:</span>
-                            <ul class="custom-ul">
-                                @foreach($foto->komentar as $comment)
-                                    <li>{{ $comment->user->username }}:&ensp;{{ $comment->isi_komentar }}</li>
-                                @endforeach
-                            </ul>
+             <h4>Comment on Photo</h4>
+                <div id="container-{{ $foto->id }}" class="custom-margin">
+                    <form id="commentForm-{{ $foto->id }}" method="POST" action="{{ route('komentar') }}">
+                    <div class="form-group">
+                        <label for="comment">Your Comment:</label>
+                        <textarea name="isi_komentar" id="comment" class="form-control" placeholder="Tulis Komentarmu..." rows="3"></textarea>
                     </div>
-            </div>
-        @else
-            <p class="text-center font-italic">Tidak ada data untuk komentar</p>
-        @endif
+                            
+                    @inject('carbon', 'Carbon\Carbon')
+                    @auth
+                        <input type="hidden" name="tgl_komentar" value="{{ $carbon::now()->format('m/d/Y') }}">
+                        <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                        <input type="hidden" name="foto_id" value="{{ $foto->id }}">
+                    @endauth
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            <div id="container-{{ $foto->id }}" class="custom-margin">
+                <div class="komentar-container">
+                    <span class="komentar-title">Komentar:</span>
+                        <ul class="custom-ul" id="comments-container-{{ $foto->id }}" class="comments-container">
+                        </ul>
+                        </div>
+                </div>
+            </div>  
     </div>
 </div>
-
 @endsection
 
 @push('like')
@@ -222,10 +209,20 @@
 
 @push('komen')
 <script>
-    function openCommentModal() {
-        var commentModal = document.getElementById('commentModal');
-        if (commentModal) {
-            commentModal.style.display = 'block';
+    function commentButtonClicked(fotoId) {
+    @auth
+        openCommentModal(fotoId);
+    @endauth
+    }
+
+    function openCommentModal(fotoId) {
+    var commentModal = document.getElementById('commentModal');
+    if (commentModal) {
+        commentModal.style.display = 'block';
+        var commentForm = document.getElementById('commentForm-' + fotoId);
+            if (commentForm) {
+                commentForm.querySelector('#comment').focus();
+            }
         }
     }
 
@@ -235,47 +232,40 @@
             commentModal.style.display = 'none';
         }
     }
-
-    window.onclick = function (event) {
-        var commentModal = document.getElementById('commentModal');
-        if (event.target === commentModal) {
-            commentModal.style.display = 'none';
-        }
-    };
 </script>
 @endpush
 
 @push('daftar-komen')
 <script>
-    $(document).ready(function () {
-        $('.comment-button').on('click', function () {
-            var fotoId = $(this).data('foto-id');
-            var userId = $(this).data('user-id');
-            var commentText = $('#comment-' + fotoId).val();
-            var container = $('#container-' + fotoId);
+$(document).ready(function () {
+    @foreach($fotos as $foto)
+        fetchComments({{ $foto->id }});
+    @endforeach
 
-            $.ajax({
-                type: 'POST',
-                url: '/komen',
-                data: {
-                    foto_id: fotoId,
-                    user_id: userId,
-                    isi_komentar: commentText
-                },
-                success: function (response) {
-                    console.log(response.message);
-                    var newComment = response.new_comment;
-                    container.find('.comments-container').append(
-                        '<li>' + newComment.user.username + ': ' + newComment.isi_komentar + '</li>'
-                    );
-                    $('#comment-' + fotoId).val('');
-                },
-                error: function (error) {
-                    console.error('Error:', error);
+    function fetchComments(fotoId) {
+        $.ajax({
+            type: 'GET',
+            url: '/get-comments',
+            data: {
+                foto_id: fotoId
+            },
+            success: function (response) {
+                var commentsContainer = $('#comments-container-' + fotoId);
+                commentsContainer.empty();
+                if (response.comments.length > 0) {
+                    $.each(response.comments, function (index, comment) {
+                        commentsContainer.append('<li>' + comment.user.username + ': ' + comment.isi_komentar + '</li>');
+                    });
+                } else {
+                    commentsContainer.append('<p>No comments for this photo.</p>');
                 }
-            });
+            },
+            error: function (error) {
+                console.error('Error fetching comments:', error);
+            }
         });
-    });
+    }
+});
 </script>
 @endpush
 

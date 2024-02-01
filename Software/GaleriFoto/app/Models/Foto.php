@@ -36,6 +36,6 @@ class Foto extends Model
     
     public function komentar()
     {
-        return $this->hasMany(KomentarFoto::class, 'foto_id');
+        return $this->hasMany(KomentarFoto::class);
     }
 }

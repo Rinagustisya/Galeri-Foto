@@ -23,6 +23,6 @@ class KomentarFoto extends Model
 
     public function foto()
     {
-        return $this->belongsTo(Foto::class);
+        return $this->belongsTo(Foto::class. 'foto_id');
     }
 }

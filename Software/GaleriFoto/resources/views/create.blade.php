@@ -43,7 +43,7 @@
                <div class="row">
                   <div class="card-body">
                         <label for="kategori_lainnya">Kategori Lainnya</label>
-                        <input type="text" name="kategori_lainnya" id="kategori_lainnya_input" class="form-control" required="{{ old('nama_album') == 'Lainnya' && old('kategori_lainnya') ? 'required' : '' }}" placeholder="Masukan Kategori Lainnya...">
+                        <input type="text" name="kategori_lainnya" id="kategori_lainnya_input" class="form-control" value="{{ old('nama_album') == 'Lainnya' && old('kategori_lainnya') ? 'required' : '' }}" placeholder="Masukan Kategori Lainnya...">
                   </div>
                </div>
             </div>
