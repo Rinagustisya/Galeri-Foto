@@ -54,17 +54,17 @@
                             <img src="{{ route('all.foto', ['filename' => basename($foto->lokasi_file)]) }}" alt="gambar" class="img-fluid" style="height: 300px;">
                         </div>
                         @auth  
-                            <button class="like-button" @if($foto) data-foto-id="{{ $foto->id }}" @endif data-user-id="{{ auth()->user()->id }}">
-                                <i class="far fa-heart"></i> Like
-                            </button>
-                            <button class="comment-button" @if($foto) data-foto-id="{{ $foto->id }}" @endif data-user-id="{{ auth()->user()->id }}" onclick="commentButtonClicked()">
+                        <button class="like-button" data-foto-id="{{ $foto->id }}" data-user-id="{{ auth()->user()->id }}">
+                            <i class="far fa-heart"></i> Like
+                        </button>
+                            <button class="comment-button" data-foto-id="{{ $foto->id }}" onclick="commentButtonClicked(this)">
                                 <i class="far fa-comment"></i> Comment
                             </button>
                         @else
                             <button class="like-button" onclick="likeButtonClicked()">
                                 <i class="far fa-heart"></i> Like
                             </button>
-                            <button class="comment-button" onclick="commentButtonClicked()">
+                            <button class="comment-button" onclick="commentButtonClicked(this)">
                                 <i class="far fa-comment"></i> Comment
                             </button>
                         @endauth
@@ -131,13 +131,14 @@
 @push('komen')
 <script>
         function openCommentModal(fotoId) {
+            console.log('Opening Comment Modal with Foto ID:', fotoId);
                 var commentModal = document.getElementById('commentModal');
                 if (commentModal) {
                     commentModal.style.display = 'block';
 
                     var fotoIdInput = document.getElementById('foto_id');
                     if (fotoIdInput) {
-                        fotoIdInput.value = fotoId !== undefined ? fotoId : "default";
+                        fotoIdInput.value = fotoId || "";
                     }
 
                     var commentForm = document.getElementById('commentForm');
@@ -160,67 +161,71 @@
         function fetchComments(fotoId) {
             var commentsContainer = document.getElementById('comments-container');
             if (commentsContainer) {
-                fetch('/get-comments?foto_id=' + fotoId)
-                    .then(response => response.json())
-                    .then(data => {
-                        commentsContainer.innerHTML = '';
-                        if (data.comments.length > 0) {
-                            data.comments.forEach(comment => {
-                                commentsContainer.innerHTML += '<li>' + comment.user.username + ': ' + comment.isi_komentar + '</li>';
-                            });
-                        } else {
-                            commentsContainer.innerHTML = '<p>No comments for this photo.</p>';
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error fetching comments:', error);
-                    });
+                if (fotoId !== null && fotoId !== undefined && fotoId !== "") {
+                    fetch('/get-comments?foto_id=' + fotoId)
+                        .then(response => response.json())
+                        .then(data => {
+                            commentsContainer.innerHTML = '';
+                            if (data.comments.length > 0) {
+                                data.comments.forEach(comment => {
+                                    commentsContainer.innerHTML += '<li>' + comment.user.username + ': ' + comment.isi_komentar + '</li>';
+                                });
+                            } else {
+                                commentsContainer.innerHTML = '<p>No comments for this photo.</p>';
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching comments:', error);
+                        });
+                } else {
+                    commentsContainer.innerHTML = '<p>No comments for this photo.</p>';
+                }
             }
         }
 
+
         document.addEventListener('DOMContentLoaded', function (event) {
-        console.log('DOMContentLoaded event fired.');
-        @auth
-            console.log('DOMContentLoaded event fired.'); // Add this line for debugging
-            var likeButtons = document.querySelectorAll('.like-button');
-            
-            likeButtons.forEach(function (button) {
-                button.addEventListener('click', function (event) {
-                    var fotoId = button.dataset.fotoId;
-                    var userId = button.dataset.userId;
-                    console.log('Like button clicked. Foto ID:', fotoId, 'User ID:', userId);
+            @auth
+                console.log('DOMContentLoaded event fired.');
+                var likeButtons = document.querySelectorAll('.like-button[data-foto-id]');
 
-                    var isLiked = button.classList.contains('liked');
+                likeButtons.forEach(function (button) {
+                    button.addEventListener('click', function (event) {
+                        var fotoId = this.getAttribute('data-foto-id');
+                        var userId = this.getAttribute('data-user-id');
+                        console.log('Like button clicked. Foto ID:', fotoId, 'User ID:', userId);
 
-                    $.ajax({
-                        type: 'POST',
-                        url: '/like-foto',
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                            foto_id: fotoId,
-                            user_id: userId,
-                            unlike: isLiked
-                        },
-                        success: function (response) {
-                            console.log(response.message);
+                        var isLiked = button.classList.contains('liked');
 
-                            button.classList.toggle('liked', !isLiked);
+                        $.ajax({
+                            type: 'POST',
+                            url: '/like-foto',
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                foto_id: fotoId,
+                                user_id: userId,
+                                unlike: isLiked
+                            },
+                            success: function (response) {
+                                console.log(response.message);
 
-                            var likedByUsers = response.liked_by;
-                            var currentUserID = '{{ auth()->id() }}';
+                                button.classList.toggle('liked', !isLiked);
 
-                            var userHasLiked = likedByUsers.includes(currentUserID);
-                            var likedByText = "Disukai oleh: " + (likedByUsers.length > 0 ? likedByUsers.join(', ') : "-");
+                                var likedByUsers = response.liked_by;
+                                var currentUserID = '{{ auth()->id() }}';
 
-                            $(`#container-${fotoId} .liked-by-text`).text(likedByText);
-                        },
-                        error: function (error) {
-                            console.error('Error:', error);
-                        }
+                                var userHasLiked = likedByUsers.includes(currentUserID);
+                                var likedByText = "Disukai oleh: " + (likedByUsers.length > 0 ? likedByUsers.join(', ') : "-");
+
+                                $(`#container-${fotoId} .liked-by-text`).text(likedByText);
+                            },
+                            error: function (error) {
+                                console.error('Error:', error);
+                            }
+                        });
+                        event.preventDefault();
                     });
-                    event.preventDefault();
                 });
-            });
             @endauth
 
         var closeButton = document.querySelector('.comment-modal .close');
@@ -235,7 +240,7 @@
 
 @push('sweet')
 <script>
-    function likeButtonClicked() {
+     function likeButtonClicked() {
         Swal.fire({
             icon: 'warning',
             title: 'Login Required',
@@ -250,16 +255,17 @@
         });
     }
 
-    function commentButtonClicked() {
+    function commentButtonClicked(button) {
         @auth
-        var fotoId = document.querySelector('.comment-button').getAttribute('data-foto-id');
+        var button = event.currentTarget;
+        var fotoId = button.getAttribute('data-foto-id');
         console.log('Foto ID:', fotoId);
-        openCommentModal();
+        openCommentModal(fotoId);
         @else
             Swal.fire({
                 icon: 'info',
                 title: 'Login Required',
-                text: 'You need to log in to comment on this photo.',
+                text: 'You need to log in to comment this photo.',
                 showCancelButton: true,
                 confirmButtonText: 'Log In',
                 cancelButtonText: 'Cancel',
