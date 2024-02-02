@@ -90,21 +90,26 @@ class DataFotoController extends Controller
      */
     public function show(int $id)
     {
-        $data = Foto::with('komentar.user')->find($id);
-        $album = Album::find($data->album_id);
+        try {
+            $data = Foto::with('komentar.user')->findOrFail($id);
+            $album = Album::find($data->album_id);
+                
+            if ($album) {
+                $albums = Album::where('nama_album', $album->nama_album)
+                    ->orWhere('nama_album', 'custom_category')
+                    ->pluck('nama_album')
+                    ->unique();
 
-        if ($album) {
-            $albums = Album::where('nama_album', $album->nama_album)
-                ->orWhere('nama_album', 'custom_category')
-                ->pluck('nama_album')
-                ->unique();
-
-            return view('data-foto-edit', [
-                'data' => $data,
-                'albums' => $albums,
-            ]);
-        } else {
-            return redirect()->route('data-foto')->with('error', 'Data Not Found!');
+                return view('data-foto-edit', [
+                    'data' => $data,
+                    'albums' => $albums,
+                ]);
+            } else {
+                return back()->with('error', 'Data Not Found!');
+            }
+        } catch (\Exception $e) {
+            \Log::error('Error in show method: ' . $e->getMessage());
+            return back()->with('error', 'Something went wrong. Please try again.');
         }
     }
 

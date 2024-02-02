@@ -9,26 +9,27 @@
                     <input class="form-control mr-sm-2 w-100" type="search" placeholder="Search" aria-label="Search">
                 </div>
                 <div class="col-4">
-                <div class="dropdown">
-                    <form action="{{ route('home') }}" method="GET" id="categoryForm">
-                        <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button" id="dropdownMenuButton" data-toggle="dropdown">
-                            Kategori
-                        </button>
-                        <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="#" data-category="Arsitektur">Arsitektur</a>
-                            <a class="dropdown-item" href="#" data-category="Dokumenter">Dokumenter</a>
-                            <a class="dropdown-item" href="#" data-category="Seni Rupa">Seni Rupa</a>
-                            <a class="dropdown-item" href="#" data-category="Fashion">Fashion</a>
-                            <a class="dropdown-item" href="#" data-category="Olahraga">Olahraga</a>
-                            <a class="dropdown-item" href="#" data-category="Makanan">Makanan</a>
-                            <a class="dropdown-item" href="#" data-category="Satwa Liar">Satwa Liar</a>
-                            <a class="dropdown-item" href="#" data-category="Hewan">Hewan</a>
-                            <a class="dropdown-item" href="#" data-category="Laut">Laut</a>
-                            <a class="dropdown-item" href="#" data-category="Perjalanan">Perjalanan</a>
-                            <a class="dropdown-item" href="#" data-category="Lainnya">Lainnya</a>
-                        </div>
-                        <input type="hidden" name="category" id="selectedCategory" value="">
-                    </form>
+                    <div class="dropdown">
+                        <form action="{{ route('home') }}" method="GET" id="categoryForm">
+                            <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button" id="dropdownMenuButton" data-toggle="dropdown">
+                                Kategori
+                            </button>
+                            <div class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#" data-category="Arsitektur">Arsitektur</a>
+                                <a class="dropdown-item" href="#" data-category="Dokumenter">Dokumenter</a>
+                                <a class="dropdown-item" href="#" data-category="Seni Rupa">Seni Rupa</a>
+                                <a class="dropdown-item" href="#" data-category="Fashion">Fashion</a>
+                                <a class="dropdown-item" href="#" data-category="Olahraga">Olahraga</a>
+                                <a class="dropdown-item" href="#" data-category="Makanan">Makanan</a>
+                                <a class="dropdown-item" href="#" data-category="Satwa Liar">Satwa Liar</a>
+                                <a class="dropdown-item" href="#" data-category="Hewan">Hewan</a>
+                                <a class="dropdown-item" href="#" data-category="Laut">Laut</a>
+                                <a class="dropdown-item" href="#" data-category="Perjalanan">Perjalanan</a>
+                                <a class="dropdown-item" href="#" data-category="Lainnya">Lainnya</a>
+                            </div>
+                            <input type="hidden" name="category" id="selectedCategory" value="">
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -106,7 +107,9 @@
                     @auth
                         <input type="hidden" name="tgl_komentar" value="{{ $carbon::now()->format('m/d/Y') }}">
                         <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
-                        <input type="hidden" name="foto_id" id="foto_id" value="">
+                        @isset($foto)
+                            <input type="hidden" name="foto_id" id="foto_id" value="{{ $foto->id }}">
+                        @endisset
                     @endauth
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Submit</button>
@@ -128,20 +131,24 @@
 @push('komen')
 <script>
         function openCommentModal(fotoId) {
-            var commentModal = document.getElementById('commentModal');
-            if (commentModal) {
-                commentModal.style.display = 'block';
-                var fotoIdInput = document.getElementById('foto_id');
-                if (fotoIdInput) {
-                    fotoIdInput.value = fotoId;
+                var commentModal = document.getElementById('commentModal');
+                if (commentModal) {
+                    commentModal.style.display = 'block';
+
+                    var fotoIdInput = document.getElementById('foto_id');
+                    if (fotoIdInput) {
+                        fotoIdInput.value = fotoId !== undefined ? fotoId : "default";
+                    }
+
+                    var commentForm = document.getElementById('commentForm');
+                    if (commentForm) {
+                        commentForm.querySelector('#comment').focus();
+                    }
+
+                    fetchComments(fotoId);
                 }
-                var commentForm = document.getElementById('commentForm');
-                if (commentForm) {
-                    commentForm.querySelector('#comment').focus();
-                }
-                fetchComments(fotoId);
             }
-        }
+
 
         function closeCommentModal() {
             var commentModal = document.getElementById('commentModal');
@@ -171,48 +178,50 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function (event) {
+        console.log('DOMContentLoaded event fired.');
         @auth
-        var fotoId = event.target.dataset.fotoId;
-            if (fotoId !== undefined) {
-                openCommentModal(fotoId);
-            }
+            console.log('DOMContentLoaded event fired.'); // Add this line for debugging
+            var likeButtons = document.querySelectorAll('.like-button');
+            
+            likeButtons.forEach(function (button) {
+                button.addEventListener('click', function (event) {
+                    var fotoId = button.dataset.fotoId;
+                    var userId = button.dataset.userId;
+                    console.log('Like button clicked. Foto ID:', fotoId, 'User ID:', userId);
 
-            if (event.target.classList.contains('like-button')) {
-                var fotoId = event.target.dataset.fotoId;
-                var userId = event.target.dataset.userId;
-                var button = event.target;
-                var isLiked = button.classList.contains('liked');
+                    var isLiked = button.classList.contains('liked');
 
-                $.ajax({
-                type: 'POST',
-                url: '/like-foto',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    foto_id: fotoId,
-                    user_id: userId,
-                    unlike: isLiked
-                },
-                success: function (response) {
-                    console.log(response.message);
+                    $.ajax({
+                        type: 'POST',
+                        url: '/like-foto',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            foto_id: fotoId,
+                            user_id: userId,
+                            unlike: isLiked
+                        },
+                        success: function (response) {
+                            console.log(response.message);
 
-                    button.toggleClass('liked', !isLiked);
+                            button.classList.toggle('liked', !isLiked);
 
-                    var likedByUsers = response.liked_by;
-                    var currentUserID = '{{ auth()->id() }}';
+                            var likedByUsers = response.liked_by;
+                            var currentUserID = '{{ auth()->id() }}';
 
-                    var userHasLiked = likedByUsers.includes(currentUserID);
-                    var likedByText = "Disukai oleh: " + (likedByUsers.length>0 ? likedByUsers.join(', ') : "-");
+                            var userHasLiked = likedByUsers.includes(currentUserID);
+                            var likedByText = "Disukai oleh: " + (likedByUsers.length > 0 ? likedByUsers.join(', ') : "-");
 
-                    $(`#container-${fotoId} .liked-by-text`).text(likedByText);
-                },
-                error: function (error) {
-                    console.error('Error:', error);
-                }
+                            $(`#container-${fotoId} .liked-by-text`).text(likedByText);
+                        },
+                        error: function (error) {
+                            console.error('Error:', error);
+                        }
+                    });
+                    event.preventDefault();
                 });
-                event.preventDefault();
-            }
-        @endauth
+            });
+            @endauth
 
         var closeButton = document.querySelector('.comment-modal .close');
         if (closeButton) {
@@ -220,7 +229,7 @@
                 closeCommentModal();
             });
         }
-    });
+});
 </script>
 @endpush
 
