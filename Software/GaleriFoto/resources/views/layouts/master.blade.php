@@ -52,7 +52,6 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 @stack('select2')
-@stack('like')
 @stack('sweet')
 @stack('komen')
 @stack('js')

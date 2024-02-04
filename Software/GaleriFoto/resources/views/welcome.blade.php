@@ -1,4 +1,4 @@
-@extends('layouts.master', ['title'=>'Dashboard'])
+@extends('layouts.master', ['title'=>'Beranda'])
 
 @section('content')
 <div class="jumbotron">

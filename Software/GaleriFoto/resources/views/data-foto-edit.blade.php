@@ -32,11 +32,11 @@
                                     @endforeach
                                         <option value="Arsitektur" {{ $data->nama_album == 'Arsitektur' ? 'selected' : '' }}>Arsitektur</option>
                                         <option value="Dokumenter" {{ $data->nama_album == 'Dokumenter' ? 'selected' : '' }}>Dokumenter</option>
-                                        <option value="Seni_rupa" {{ $data->nama_album == 'Seni_rupa' ? 'selected' : '' }}>Seni Rupa</option>
+                                        <option value="Seni rupa" {{ $data->nama_album == 'Seni rupa' ? 'selected' : '' }}>Seni Rupa</option>
                                         <option value="Fashion" {{ $data->nama_album == 'Fashion' ? 'selected' : '' }}>Fashion</option>
                                         <option value="Olahraga" {{ $data->nama_album == 'Olahraga' ? 'selected' : '' }}>Olahraga</option>
                                         <option value="Makanan" {{ $data->nama_album == 'Makanan' ? 'selected' : '' }}>Makanan</option>
-                                        <option value="Satwa_liar" {{ $data->nama_album == 'Satwa_liar' ? 'selected' : '' }}>Satwa Liar</option>
+                                        <option value="Satwa liar" {{ $data->nama_album == 'Satwa liar' ? 'selected' : '' }}>Satwa Liar</option>
                                         <option value="Hewan" {{ $data->nama_album == 'Hewan' ? 'selected' : '' }}>Hewan</option>
                                         <option value="Laut" {{ $data->nama_album == 'Laut' ? 'selected' : '' }}>Laut</option>
                                         <option value="Perjalanan" {{ $data->nama_album == 'Perjalanan' ? 'selected' : '' }}>Perjalanan</option>
@@ -53,7 +53,7 @@
                             <div class="row">
                                 <div class="card-body">
                                     <label for="custom_category">Kategori Lainnya</label>
-                                    <input type="text" class="form-control" id="custom_category" name="custom_category" value="{{ $data->album->custom_category }}">
+                                    <input type="text" class="form-control" id="custom_category" name="custom_category" value="{{ $data->album->custom_category }}" placeholder="Masukan Kategori Lainnya...">
                                     @if ($errors->has('custom_category'))
                                         <span class="text-danger text-left">{{ $errors->first('custom_category') }}</span>
                                     @endif
@@ -113,3 +113,35 @@
    </form>
 </div>
 @endsection
+
+@push('input-kategori')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const namaAlbumSelect = document.getElementById('nama_album');
+        const kategoriLainnyaInput = document.getElementById('kategori_lainnya');
+        const kategoriLainnyaContainer = document.getElementById('kategori_lainnya');
+
+        namaAlbumSelect.addEventListener('change', function () {
+         if (this.value === 'Lainnya') {
+               kategoriLainnyaInput.required = true;
+               kategoriLainnyaContainer.style.display = 'block';
+               kategoriLainnyaInput.name = 'nama_album'; 
+            } else {
+               kategoriLainnyaInput.required = false;
+               kategoriLainnyaContainer.style.display = 'none';
+               kategoriLainnyaInput.name = 'lainnya';
+            }
+        });
+
+        if (namaAlbumSelect.value === 'Lainnya') {
+            kategoriLainnyaInput.required = true;
+            kategoriLainnyaContainer.style.display = 'block';
+            kategoriLainnyaInput.name = 'nama_album';
+        } else {
+            kategoriLainnyaInput.required = false;
+            kategoriLainnyaContainer.style.display = 'none';
+            kategoriLainnyaInput.name = 'lainnya';
+        }
+    });
+</script>
+@endpush
