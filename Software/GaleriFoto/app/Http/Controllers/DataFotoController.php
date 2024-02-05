@@ -90,34 +90,34 @@ class DataFotoController extends Controller
      * Display the specified resource.
      */
     public function show(int $id)
-{
-    try {
-        $data = Foto::with('komentar.user')->findOrFail($id);
-        $album = Album::find($data->album_id);
+    {
+        try {
+            $data = Foto::with('komentar.user')->findOrFail($id);
+            $album = Album::find($data->album_id);
 
-        if ($album) {
-            // Retrieve custom category directly from the album
-            $customCategory = ($album->nama_album === 'Lainnya') ? $album->custom_category : null;
+            if ($album) {
+                // Retrieve custom category directly from the album
+                $customCategory = ($album->nama_album === 'Lainnya') ? $album->custom_category : null;
 
-            // Fetch unique albums
-            $albums = Album::where('nama_album', $album->nama_album)
-                ->orWhere('nama_album', 'custom_category')
-                ->pluck('nama_album')
-                ->unique();
+                // Fetch unique albums
+                $albums = Album::where('nama_album', $album->nama_album)
+                    ->orWhere('nama_album', 'custom_category')
+                    ->pluck('nama_album')
+                    ->unique();
 
-            return view('data-foto-edit', [
-                'data' => $data,
-                'customCategory' => $customCategory,
-                'albums' => $albums,
-            ]);
-        } else {
-            return back()->with('error', 'Data Not Found!');
+                return view('data-foto-edit', [
+                    'data' => $data,
+                    'customCategory' => $customCategory,
+                    'albums' => $albums,
+                ]);
+            } else {
+                return back()->with('error', 'Data Not Found!');
+            }
+        } catch (\Exception $e) {
+            \Log::error('Error in show method: ' . $e->getMessage());
+            return back()->with('error', 'Something went wrong. Please try again.');
         }
-    } catch (\Exception $e) {
-        \Log::error('Error in show method: ' . $e->getMessage());
-        return back()->with('error', 'Something went wrong. Please try again.');
     }
-}
 
     public function showGambar($filename = null)
     {
@@ -125,8 +125,8 @@ class DataFotoController extends Controller
             abort(404);
         }
 
-        $path = 'public/data_foto/' . $filename; // Corrected path concatenation
-        $filePath = storage_path('app/' . $path); // Corrected path concatenation
+        $path = 'public/data_foto/' . $filename; 
+        $filePath = storage_path('app/' . $path);
 
         if (Storage::exists($path)) {
             $fileContents = file_get_contents($filePath);
