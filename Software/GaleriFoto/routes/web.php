@@ -37,7 +37,8 @@ Route::group(['middleware' => 'guest'], function () {
 
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::view('/dashboard', 'dashboard')->name('dashboard');
+    Route::get('/dashboard', [DataFotoController::class, 'dashboard'])->name('dashboard');
+    Route::get('/gambarsaya/{filename?}', [DataFotoController::class, 'showGambar'])->name('foto.saya');
     Route::view('/TambahData', 'create')->name('create');
     /**
      * Logout

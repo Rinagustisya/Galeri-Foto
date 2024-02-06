@@ -156,9 +156,24 @@ class DataFotoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function dashboard(Request $request)
     {
-        //
+        $user_id = $request->input('user_id');
+        $categoryFilter = $request->input('category');
+
+        $fotos = Foto::with(['user', 'komentar', 'album'])
+            ->where('privasi', 'Public')
+            ->when($user_id, function ($query) use ($user_id) {
+                return $query->where('user_id', $user_id);
+            })
+            ->when(!$user_id, function ($query) {
+                // Use the authenticated user's ID if no user_id is provided
+                return $query->where('user_id', auth()->id());
+            })
+            ->orderBy('tgl_unggah', 'desc')
+            ->get();
+
+        return view('dashboard', compact('fotos', 'user_id'));
     }
 
     /**

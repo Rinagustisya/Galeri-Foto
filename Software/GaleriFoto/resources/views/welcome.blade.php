@@ -78,8 +78,7 @@
                             @endforeach
                             </p>
                         </div>
-                        <div class="custom-margin"><b>{{ $foto->judul_foto }}</b></div>
-                        <div class="custom-margin">{{ $foto->deskripsi_foto }}</div>
+                        <div class="custom-margin"><b>Deskripsi : </b>{{ $foto->deskripsi_foto }}</div>
                     </div>
                 @endforeach
             @else
