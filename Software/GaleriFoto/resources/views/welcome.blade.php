@@ -86,8 +86,11 @@
             @endif
             </div>
         </div>
+        <div class="card-body py-0">
+            {{ $fotos->links('pagenation') }}
+        </div>
     <!-- end foto -->
-    </div> 
+    </div>
 </div>
 
 <!-- modal -->

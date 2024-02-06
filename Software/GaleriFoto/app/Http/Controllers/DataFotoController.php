@@ -148,7 +148,7 @@ class DataFotoController extends Controller
             });
         })
         ->orderBy('tgl_unggah', 'desc')
-        ->get();
+        ->paginate(20);
     
         return view('welcome', compact('fotos', 'categoryFilter'));
     }
