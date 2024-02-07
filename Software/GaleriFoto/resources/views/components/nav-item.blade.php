@@ -2,6 +2,6 @@
 <?php
 $active =$link == url()->current();
 ?>
-<li class="nav-item {{ $active ? 'active':'' }}">
-    <a class="nav-link" href="<?= $link ?>">{{ $label }}</a>
+<li class="nav-item {{ $active ? 'active font-weight-bold' : '' }}">
+    <a class="nav-link nav-link-ltr" href="<?= $link ?>">{{ $label }}</a>
 </li>

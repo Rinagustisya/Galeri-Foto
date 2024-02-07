@@ -49,7 +49,7 @@ class RegisterController extends Controller
         // Log in the newly registered user (optional)
         auth()->login($user);
 
-        Alert::success('Hore!', 'Anda Berhasil Registrasi, Silahkan Login!');
+        Alert::success('Hore!', 'Anda Berhasil Registrasi!');
         return redirect()->route('dashboard');
     }
 

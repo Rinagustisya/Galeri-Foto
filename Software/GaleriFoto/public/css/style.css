@@ -1,9 +1,66 @@
 .jumbotron {
-  padding-top: 5rem;
+  padding-top: 6rem;
 }
 .komentar-container {
   display: flex;
   flex-direction: column;
+}
+.nav-link {
+  font-family: 'Poppins';
+  font-weight: bold;
+  font-size: 12px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #031D44;
+  padding: 20px 0px;
+  display: inline-block;
+  position: relative;
+  opacity: 0.75;
+}
+
+.nav-link:hover {
+  opacity: 1;
+}
+
+.nav-link::before {
+  transition: 300ms;
+  height: 5px;
+  content: "";
+  position: absolute;
+  background-color: #031D44;
+}
+
+.nav-link-ltr::before {
+  width: 0%;
+  bottom: 10px;
+}
+
+.nav-link-ltr:hover::before {
+  width: 100%;
+}
+
+.nav-link-fade-up::before {
+  width: 100%;
+  bottom: 5px;
+  opacity: 0;
+}
+
+.nav-link-fade-up:hover::before {
+  bottom: 10px;
+  opacity: 1;
+}
+
+.nav-link-grow-up::before {
+  height: 0%;
+  width: 100%;
+  bottom: 0px;
+}
+
+.nav-link-grow-up:hover::before {
+  height: 5px;
+}
+.nav-link.active {
+  font-weight: bold;
 }
 
 .komentar-title {

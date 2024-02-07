@@ -9,7 +9,7 @@
         </div>
    </div>
 
-    <div class="card mt-3">
+   <div class="card mt-3">
         <div class="card-body">
             <h3><strong>Foto Saya</strong></h3>
             <div class="container border p-3">
@@ -26,7 +26,9 @@
                             </div>
                         @endforeach
                     @else
-                        <p style="text-align: center; font-style: italic;">Tidak ada data</p>
+                        <div class="col-md-12 text-center">
+                            <p style="font-style: italic;">Tidak ada data</p>
+                        </div>
                     @endif
                 </div>
             </div>

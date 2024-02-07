@@ -9,12 +9,11 @@
   <!-- Google Font: Poppins -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" crossorigin="anonymous" />
+  <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
   <!-- icheck bootstrap -->
-  <link rel="stylesheet" href="../../plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+  <link rel="stylesheet" href="/adminlte/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="adminlte/dist/css/adminlte.min.css">
-
   <style>
     body {
       background-color: #FFFFFF;
@@ -67,7 +66,12 @@
       align-items: center;
     }
 
-  .logo span {
+    .logo img {
+    height: 50px; /* Adjust the height according to your needs */
+    margin-right: 30%; /* Add margin to move the text to the right */
+    }
+
+    .logo span {
         font-weight: bold;
         white-space: nowrap;
         font-size: 18px;
@@ -75,12 +79,19 @@
         /* margin-right: 10px; Adjust the margin to move the text to the left */
       }
 
+     
+    /* ... existing styles ... */
+    .input-group-prepend span {
+      width: 40px; /* Adjust the width as needed */
+      text-align: center;
+    }
+
   </style>
 </head>
 
 <body>
 <div class="logo" style="display: flex; align-items: center;">
-    <i class="fas fa-images"></i>
+    <img src="{{ url('logo.png') }}" alt="Logo" style="height: 65px;">
     <span>Galeri Foto</span>
 </div>
 
@@ -89,68 +100,101 @@
     <p>Yuk, lengkapi data diri dan buat akun kamu!</p>
 
     <form action="{{ route('register.perform') }}" method="post">
-        <div class="row">
-        <div class="col-md-6">
-          <div class="form-group">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fas fa-user"></i></span>
+            </div>
             <input type="text" class="form-control" id="nama" placeholder="Masukkan nama lengkap" name="nama_lengkap">
-            @error('nama_lengkap')
-            <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
           </div>
-
-          <div class="form-group">
-            <input type="email" class="form-control" id="email" placeholder="Masukkan email" name="email">
-            @error('email')
-            <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-          </div>
-
-          <div class="form-group">
-            <input type="text" class="form-control" id="alamat" placeholder="Masukkan alamat" name="alamat">
-            @error('alamat')
-            <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-          </div>
+          @error('nama_lengkap')
+          <div class="invalid-feedback">{{ $message }}</div>
+          @enderror
         </div>
-        <div class="col-md-6">
-          <div class="form-group">
-            <input type="text" class="form-control" id="username" placeholder="Masukkan username" name="username">
-            @error('username')
-            <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-          </div>
 
-          <div class="form-group">
-            <input type="password" class="form-control" id="password" placeholder="Masukkan password" name="password">
-            @error('password')
-            <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+            </div>
+            <input type="email" class="form-control" id="email" placeholder="Masukkan email" name="email">
           </div>
+          @error('email')
+          <div class="invalid-feedback">{{ $message }}</div>
+          @enderror
+        </div>
 
-          <div class="form-group">
-            <input type="password" class="form-control" id="confirm-password" placeholder="Konfirmasi password" name="password_confirmation">
-            @error('password_confirmation')
-            <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+            </div>
+            <input type="text" class="form-control" id="alamat" placeholder="Masukkan alamat" name="alamat">
           </div>
+          @error('alamat')
+          <div class="invalid-feedback">{{ $message }}</div>
+          @enderror
         </div>
       </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fas fa-at"></i></span>
+            </div>
+            <input type="text" class="form-control" id="username" placeholder="Masukkan username" name="username">
+          </div>
+          @error('username')
+          <div class="invalid-feedback">{{ $message }}</div>
+          @enderror
+        </div>
 
-      <button type="submit" class="btn btn-primary">Buat Akun</button>
-    </form>
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fas fa-lock"></i></span>
+            </div>
+            <input type="password" class="form-control" id="password" placeholder="Masukkan password" name="password">
+          </div>
+          @error('password')
+          <div class="invalid-feedback">{{ $message }}</div>
+          @enderror
+        </div>
+
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="fas fa-lock"></i></span>
+            </div>
+            <input type="password" class="form-control" id="confirm-password" placeholder="Konfirmasi password"
+              name="password_confirmation">
+          </div>
+          @error('password_confirmation')
+          <div class="invalid-feedback">{{ $message }}</div>
+          @enderror
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Buat Akun</button>
+  </form>
+
 
     <div class="text-akhir">
       <p>Sudah punya akun? <a href="{{route('login.show')}}">Kembali ke halaman login</a></p>
     </div>
-
   </div>
 
+  
+
   <!-- jQuery -->
-  <script src="../../plugins/jquery/jquery.min.js"></script>
+  <script src="/adminlte/plugins/jquery/jquery.min.js"></script>
   <!-- Bootstrap 4 -->
-  <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
   <!-- AdminLTE App -->
-  <script src="../../dist/js/adminlte.min.js"></script>
+  <script src="..../dist/js/adminlte.min.js"></script>
 </body>
 
 </html>
