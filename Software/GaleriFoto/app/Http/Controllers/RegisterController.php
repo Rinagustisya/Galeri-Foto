@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use Alert;
+use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,7 +28,6 @@ class RegisterController extends Controller
      */
     public function store(Request $request)
     {
-         // Validate the form data
          $request->validate([
             'nama_lengkap' => 'required|string',
             'username' => 'required|string|unique:users',
@@ -37,7 +36,6 @@ class RegisterController extends Controller
             'password' => 'required|string|min:4|confirmed',
         ]);
 
-        // Create a new user
         $user = User::create([
             'nama_lengkap' => $request->input('nama_lengkap'),
             'username' => $request->input('username'),
@@ -46,11 +44,7 @@ class RegisterController extends Controller
             'password' => bcrypt($request->input('password')),
         ]);
 
-        // Log in the newly registered user (optional)
-        auth()->login($user);
-
-        Alert::success('Hore!', 'Anda Berhasil Registrasi!');
-        return redirect()->route('dashboard');
+        return redirect()->route('login.show');
     }
 
     /**

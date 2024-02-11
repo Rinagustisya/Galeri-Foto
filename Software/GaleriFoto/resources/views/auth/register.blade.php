@@ -99,7 +99,7 @@
     <h3>Pertama Kali ke Galeri Foto?</h3>
     <p>Yuk, lengkapi data diri dan buat akun kamu!</p>
 
-    <form action="{{ route('register.perform') }}" method="post">
+    <form action="{{ route('register.perform') }}" method="post" id="form1">
     <div class="row">
       <div class="col-md-6">
         <div class="form-group">
@@ -188,13 +188,29 @@
   </div>
 
   
-
   <!-- jQuery -->
   <script src="/adminlte/plugins/jquery/jquery.min.js"></script>
   <!-- Bootstrap 4 -->
   <script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
   <!-- AdminLTE App -->
   <script src="..../dist/js/adminlte.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+  <script>
+    $(document).ready(function () {
+      $('#form1').submit(function () {
+        submitForm();
+      });
+    });
+
+    function submitForm() {
+      Swal.fire({
+        icon: 'success',
+        title: 'Berhasil!',
+        text: 'Anda Berhasil Registrasi. Silahkan login!',
+      });
+    }
+  </script>
 </body>
 
 </html>
