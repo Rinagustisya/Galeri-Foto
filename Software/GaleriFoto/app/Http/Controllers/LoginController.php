@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Alert;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,21 +30,20 @@ class LoginController extends Controller
      */
     public function store(Request $request)
     {
-         // Validate the form data
-         $request->validate([
+        // Validate the form data
+        $request->validate([
             'username' => 'required|string',
             'password' => 'required|string',
         ]);
 
-        // Attempt to log in the user
-        $credentials = $request->only('username', 'password');
-        if (auth()->attempt($credentials)) {
-            // Authentication passed...
-            Alert::success('Hore!', 'Anda Berhasil Login!');
-            return redirect()->route('dashboard'); // Redirect to the intended page after successful login
-        }
+        $user = User::where('username', $request->input('username'))->first();
 
-        // Authentication failed...
+        if ($user && Hash::check($request->input('password'), $user->password)) {
+            if (auth()->attempt(['username' => $request->input('username'), 'password' => $request->input('password')])) {
+                Alert::success('Hore!', 'Anda Berhasil Login!');
+                return redirect()->route('dashboard');
+            }
+        }
         return redirect()->back()->withInput($request->only('username'))
             ->withErrors(['loginError' => 'Invalid credentials. Please try again.']);
     }

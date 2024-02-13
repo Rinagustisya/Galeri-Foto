@@ -197,20 +197,43 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
   <script>
-    $(document).ready(function () {
-      $('#form1').submit(function () {
-        submitForm();
-      });
-    });
+  $(document).ready(function () {
+    $('#form1').submit(function (event) {
+      event.preventDefault();
 
-    function submitForm() {
-      Swal.fire({
-        icon: 'success',
-        title: 'Berhasil!',
-        text: 'Anda Berhasil Registrasi. Silahkan login!',
-      });
-    }
-  </script>
+      submitForm();
+    });
+  });
+
+  function submitForm() {
+    $.ajax({
+      type: 'POST',
+      url: $('#form1').attr('action'),
+      data: $('#form1').serialize(),
+      success: function (response) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Berhasil!',
+          text: 'Anda Berhasil Registrasi. Silahkan login!',
+        });
+      },
+      error: function (xhr, status, error) {
+        var errors = xhr.responseJSON.errors;
+        var errorMessage = "";
+
+        for (var key in errors) {
+          errorMessage += errors[key][0] + "\n";
+        }
+
+        Swal.fire({
+          icon: 'error',
+          title: 'Gagal!',
+          text: errorMessage,
+        });
+      }
+    });
+  }
+</script>
 </body>
 
 </html>
