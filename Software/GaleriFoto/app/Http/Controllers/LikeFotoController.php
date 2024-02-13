@@ -46,4 +46,16 @@ class LikeFotoController extends Controller
         ]);
     }
 
+    public function getLikeStatus(Request $request)
+    {
+        $fotoId = $request->input('foto_id');
+        $userId = $request->input('user_id');
+
+        $isLiked = Like::where('foto_id', $fotoId)
+            ->where('user_id', $userId)
+            ->exists();
+
+        return response()->json(['isLiked' => $isLiked]);
+    }
+
 }

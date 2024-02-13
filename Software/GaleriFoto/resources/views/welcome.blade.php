@@ -188,47 +188,83 @@
 
         document.addEventListener('DOMContentLoaded', function (event) {
             @auth
-                console.log('DOMContentLoaded event fired.');
-                var likeButtons = document.querySelectorAll('.like-button[data-foto-id]');
+    console.log('DOMContentLoaded event fired.');
+    var likeButtons = document.querySelectorAll('.like-button[data-foto-id]');
 
-                likeButtons.forEach(function (button) {
-                    button.addEventListener('click', function (event) {
-                        var fotoId = this.getAttribute('data-foto-id');
-                        var userId = this.getAttribute('data-user-id');
-                        console.log('Like button clicked. Foto ID:', fotoId, 'User ID:', userId);
+    likeButtons.forEach(function (button) {
+        var fotoId = button.getAttribute('data-foto-id');
+        var userId = button.getAttribute('data-user-id');
 
-                        var isLiked = button.classList.contains('liked');
+        // Fetch initial like state from localStorage
+        var localStorageKey = `likeStatus_${userId}_${fotoId}`;
+        var isLiked = localStorage.getItem(localStorageKey);
+        if (isLiked !== null) {
+            isLiked = JSON.parse(isLiked);
+            button.classList.toggle('liked', isLiked);
+            button.style.backgroundColor = isLiked ? '#F45050' : '#EEEEEE';
+        } else {
+            // If not in localStorage, fetch from the server
+            $.ajax({
+                type: 'GET',
+                url: '/get-like-status',
+                data: {
+                    foto_id: fotoId,
+                    user_id: userId,
+                },
+                success: function (response) {
+                    console.log('Initial like state fetched:', response.isLiked);
 
-                        $.ajax({
-                            type: 'POST',
-                            url: '/like-foto',
-                            data: {
-                                _token: '{{ csrf_token() }}',
-                                foto_id: fotoId,
-                                user_id: userId,
-                                unlike: isLiked
-                            },
-                            success: function (response) {
-                                console.log(response.message);
+                    // Set initial like state
+                    button.classList.toggle('liked', response.isLiked);
+                    button.style.backgroundColor = response.isLiked ? '#F45050' : '#EEEEEE';
 
-                                button.classList.toggle('liked', !isLiked);
+                    // Save the initial like state to localStorage
+                    localStorage.setItem(localStorageKey, JSON.stringify(response.isLiked));
+                },
+                error: function (error) {
+                    console.error('Error fetching initial like state:', error);
+                }
+            });
+        }
 
-                                var likedByUsers = response.liked_by;
-                                var currentUserID = '{{ auth()->id() }}';
+        button.addEventListener('click', function (event) {
+            console.log('Like button clicked. Foto ID:', fotoId, 'User ID:', userId);
 
-                                var userHasLiked = likedByUsers.includes(currentUserID);
-                                var likedByText = "Disukai oleh: " + (likedByUsers.length > 0 ? likedByUsers.join(', ') : "-");
+            var isLiked = button.classList.contains('liked');
 
-                                $(`#container-${fotoId} .liked-by-text`).text(likedByText);
-                            },
-                            error: function (error) {
-                                console.error('Error:', error);
-                            }
-                        });
-                        event.preventDefault();
-                    });
-                });
-            @endauth
+            $.ajax({
+                type: 'POST',
+                url: '/like-foto',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    foto_id: fotoId,
+                    user_id: userId,
+                    unlike: isLiked
+                },
+                success: function (response) {
+                    console.log(response.message);
+
+                    button.classList.toggle('liked', !isLiked);
+                    button.style.backgroundColor = isLiked ? '#EEEEEE' : '#F45050';
+
+                    var likedByUsers = response.liked_by;
+                    var currentUserID = '{{ auth()->id() }}';
+                    var likedByText = "Disukai oleh: " + (likedByUsers.length > 0 ? likedByUsers.join(', ') : "-");
+
+                    $(`#container-${fotoId} .liked-by-text`).text(likedByText);
+
+                    // Save the updated like state to localStorage
+                    localStorage.setItem(localStorageKey, JSON.stringify(!isLiked));
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                }
+            });
+            event.preventDefault();
+        });
+    });
+@endauth
+
 
         var closeButton = document.querySelector('.comment-modal .close');
         if (closeButton) {
