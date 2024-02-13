@@ -161,30 +161,30 @@
         }
 
         function fetchComments(fotoId) {
-            var commentsContainer = document.getElementById('comments-container');
-            if (commentsContainer) {
-                if (fotoId !== null && fotoId !== undefined && fotoId !== "") {
-                    fetch('/get-comments?foto_id=' + fotoId)
-                        .then(response => response.json())
-                        .then(data => {
-                            commentsContainer.innerHTML = '';
-                            if (data.comments.length > 0) {
-                                data.comments.forEach(comment => {
-                                    commentsContainer.innerHTML += '<li>' + comment.user.username + ': ' + comment.isi_komentar + '</li>';
-                                });
-                            } else {
-                                commentsContainer.innerHTML = '<p>No comments for this photo.</p>';
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error fetching comments:', error);
-                        });
-                } else {
-                    commentsContainer.innerHTML = '<p>No comments for this photo.</p>';
-                }
+        var commentsContainer = document.getElementById('comments-container');
+        if (commentsContainer) {
+            if (fotoId !== null && fotoId !== undefined && fotoId !== "") {
+                fetch('/get-comments?foto_id=' + fotoId)
+                    .then(response => response.json())
+                    .then(data => {
+                        commentsContainer.innerHTML = '';
+                        if (data.comments.length > 0) {
+                            data.comments.forEach(comment => {
+                                commentsContainer.innerHTML += '<li>' + comment.user.username + ': ' + comment.isi_komentar + '</li>';
+                            });
+                            commentsContainer.innerHTML += '<p>Total Comments: ' + data.comments.length + '</p>';
+                        } else {
+                            commentsContainer.innerHTML = '<p>No comments for this photo.</p>';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching comments:', error);
+                    });
+            } else {
+                commentsContainer.innerHTML = '<p>No comments for this photo.</p>';
             }
         }
-
+    }
 
         document.addEventListener('DOMContentLoaded', function (event) {
             @auth

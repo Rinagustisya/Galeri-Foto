@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\KomentarFoto;
 use Illuminate\Http\Request;
 use App\Models\Album;
 use App\Models\Foto;
@@ -139,19 +139,23 @@ class DataFotoController extends Controller
     public function showEntry(Request $request)
     {
         $categoryFilter = $request->input('category');
-
         $fotos = Foto::with(['user', 'komentar', 'album'])
-        ->where('privasi', 'Public')
-        ->when($categoryFilter, function ($query) use ($categoryFilter) {
-            return $query->whereHas('album', function ($q) use ($categoryFilter) {
-                $q->where('nama_album', $categoryFilter);
-            });
-        })
-        ->orderBy('tgl_unggah', 'desc')
-        ->paginate(20);
-    
+            ->where('privasi', 'Public')
+            ->when($categoryFilter, function ($query) use ($categoryFilter) {
+                return $query->whereHas('album', function ($q) use ($categoryFilter) {
+                    $q->where('nama_album', $categoryFilter);
+                });
+            })
+            ->orderBy('tgl_unggah', 'desc')
+            ->paginate(20);
+
+            $fotos->each(function ($foto) {
+                $foto->commentsCount = KomentarFoto::where('foto_id', $foto->id)->count();
+            });            
+
         return view('welcome', compact('fotos', 'categoryFilter'));
     }
+
 
     /**
      * Show the form for editing the specified resource.
