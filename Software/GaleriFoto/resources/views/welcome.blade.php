@@ -79,6 +79,10 @@
                             </p>
                         </div>
                         <div class="custom-margin"><b>Deskripsi : </b>{{ $foto->deskripsi_foto }}</div>
+                        @auth
+                        <div class="custom-margin" onclick="openCommentListModal({{ $foto->id }})">Lihat semua komentar: {{ $foto->commentsCount }}</div>
+                        @endauth
+                        <hr>
                     </div>
                 @endforeach
             @else
@@ -118,14 +122,22 @@
                         </div>
                     </form>
                 </div>
-            <div id="container" class="custom-margin">
-                <div class="komentar-container">
-                    <span class="komentar-title">Komentar:</span>
-                        <ul class="custom-ul" id="comments-container" class="comments-container">
-                        </ul>
-                    </div>
-                </div>
             </div>  
+    </div>
+</div>
+
+<!-- daftar komentar -->
+<div class="comment-list-modal" id="commentListModal">
+    <div class="modal-content small-modal">
+        <span class="close" onclick="closeCommentListModal()">&times;</span>
+        <div id="listContainer" class="custom-margin">
+            <div class="komentar-container">
+                <span class="komentar-title">Komentar:</span>
+                <ul class="custom-ul" id="comments-container" class="comments-container">
+                    <!-- ... comment list ... -->
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
 @endsection
@@ -147,8 +159,6 @@
                     if (commentForm) {
                         commentForm.querySelector('#comment').focus();
                     }
-
-                    fetchComments(fotoId);
                 }
             }
 
@@ -160,31 +170,47 @@
             }
         }
 
-        function fetchComments(fotoId) {
-        var commentsContainer = document.getElementById('comments-container');
-        if (commentsContainer) {
-            if (fotoId !== null && fotoId !== undefined && fotoId !== "") {
-                fetch('/get-comments?foto_id=' + fotoId)
-                    .then(response => response.json())
-                    .then(data => {
-                        commentsContainer.innerHTML = '';
-                        if (data.comments.length > 0) {
-                            data.comments.forEach(comment => {
-                                commentsContainer.innerHTML += '<li>' + comment.user.username + ': ' + comment.isi_komentar + '</li>';
-                            });
-                            commentsContainer.innerHTML += '<p>Total Comments: ' + data.comments.length + '</p>';
-                        } else {
-                            commentsContainer.innerHTML = '<p>No comments for this photo.</p>';
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error fetching comments:', error);
-                    });
-            } else {
-                commentsContainer.innerHTML = '<p>No comments for this photo.</p>';
+        function openCommentListModal(fotoId) {
+            var commentListModal = document.getElementById('commentListModal');
+
+            if (commentListModal) {
+                commentListModal.style.display = 'block';
+            }
+            fetchComments(fotoId);
+        }
+
+        function closeCommentListModal() {
+            var commentListModal = document.getElementById('commentListModal');
+
+            if (commentListModal) {
+                commentListModal.style.display = 'none';
             }
         }
-    }
+
+        function fetchComments(fotoId) {
+            var commentsContainer = document.getElementById('comments-container');
+            if (commentsContainer) {
+                if (fotoId !== null && fotoId !== undefined && fotoId !== "") {
+                    fetch('/get-comments?foto_id=' + fotoId)
+                        .then(response => response.json())
+                        .then(data => {
+                            commentsContainer.innerHTML = '';
+                            if (data.comments.length > 0) {
+                                data.comments.forEach(comment => {
+                                    commentsContainer.innerHTML += '<li>' + comment.user.username + ': ' + comment.isi_komentar + '</li>';
+                                });
+                            } else {
+                                commentsContainer.innerHTML = '<p>No comments for this photo.</p>';
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching comments:', error);
+                        });
+                } else {
+                    commentsContainer.innerHTML = '<p>No comments for this photo.</p>';
+                }
+            }
+        }
 
         document.addEventListener('DOMContentLoaded', function (event) {
             @auth
