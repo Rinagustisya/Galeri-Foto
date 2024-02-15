@@ -157,6 +157,9 @@
               <span class="input-group-text"><i class="fas fa-lock"></i></span>
             </div>
             <input type="password" class="form-control" id="password" placeholder="Masukkan password" name="password">
+            <div class="input-group-append">
+              <span class="input-group-text toggle-password" style="background-color: #C7B7A3; color: white; cursor: pointer;"><i class="fas fa-eye"></i></span>
+            </div>
           </div>
           @error('password')
           <div class="invalid-feedback">{{ $message }}</div>
@@ -170,6 +173,9 @@
             </div>
             <input type="password" class="form-control" id="confirm-password" placeholder="Konfirmasi password"
               name="password_confirmation">
+              <div class="input-group-append">
+                <span class="input-group-text toggle-password" style="background-color: #C7B7A3; color: white; cursor: pointer;"><i class="fas fa-eye"></i></span>
+              </div>
           </div>
           @error('password_confirmation')
           <div class="invalid-feedback">{{ $message }}</div>
@@ -234,6 +240,29 @@
     });
   }
 </script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      const togglePassword = document.querySelectorAll('.toggle-password');
+      togglePassword.forEach(function (icon) {
+        icon.addEventListener('click', function () {
+          const passwordInput = icon.closest('.input-group').querySelector('input');
+          const eyeIcon = icon.querySelector('i');
+
+          if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            eyeIcon.classList.remove('fa-eye');
+            eyeIcon.classList.add('fa-eye-slash');
+          } else {
+            passwordInput.type = 'password';
+            eyeIcon.classList.remove('fa-eye-slash');
+            eyeIcon.classList.add('fa-eye');
+          }
+        });
+      });
+    });
+</script>
+
 </body>
 
 </html>
