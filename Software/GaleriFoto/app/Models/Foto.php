@@ -9,6 +9,10 @@ class Foto extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'tgl_unggah' => 'datetime',
+    ];
+    
     protected $fillable = [
         'judul_foto',
         'deskripsi_foto',

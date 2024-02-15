@@ -82,6 +82,7 @@
                         @auth
                         <div class="custom-margin" onclick="openCommentListModal({{ $foto->id }})">Lihat semua komentar: {{ $foto->commentsCount }}</div>
                         @endauth
+                        <small style="color : grey;">{{ \Carbon\Carbon::parse($foto->tgl_unggah)->format('d F Y') }}</small>
                         <hr>
                     </div>
                 @endforeach
