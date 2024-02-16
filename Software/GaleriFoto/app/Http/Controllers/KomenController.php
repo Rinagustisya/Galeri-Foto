@@ -38,4 +38,29 @@ class KomenController extends Controller
 
         return response()->json(['comments' => $comments]);
     }
+
+    public function submit(Request $request)
+    {
+        try {
+            $request->validate([
+                'reply' => 'required',
+                'tgl_komentar' => 'required',
+                'user_id' => 'required',
+                'foto_id' => 'nullable',
+            ]);
+
+            $fotoId = $request->filled('foto_id') ? $request->foto_id : null;
+            KomentarFoto::create([
+                'isi_komentar' => $request->reply,
+                'tgl_komentar' => Carbon::now(),
+                'user_id' => Auth::id(),
+                'foto_id' => $fotoId
+            ]);
+
+            return response()->json(['status' => 'success']);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+        }
+    }
+
 }

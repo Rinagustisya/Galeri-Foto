@@ -65,7 +65,8 @@ Route::group(['middleware' => 'auth'], function () {
      * Like Foto
      */
     Route::post('/like-foto', [LikeFotoController::class, 'likeFoto']);
-    Route::get('/get-like-status', [LikeController::class, 'getLikeStatus']);
+    Route::get('/get-like-status', [LikeFotoController::class, 'getLikeStatus']);
     Route::post('/komen', [KomenController::class, 'store'])->name('komentar');
     Route::get('/get-comments', [KomenController::class, 'getComments'])->name('get.comments');
+    Route::post('/submit-reply', [KomenController::class, 'submit'])->name('submit-reply');
 });
