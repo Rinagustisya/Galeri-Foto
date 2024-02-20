@@ -189,45 +189,49 @@
     }
 
     function fetchComments(fotoId) {
-            var commentsContainer = document.getElementById('comments-container');
-            if (commentsContainer) {
-                if (fotoId !== null && fotoId !== undefined && fotoId !== "") {
-                    fetch('/get-comments?foto_id=' + fotoId)
-                        .then(response => response.json())
-                        .then(data => {
-                            commentsContainer.innerHTML = '';
-                            if (data.comments.length > 0) {
-                                data.comments.forEach(comment => {
-                                    console.log('Comment ID:', comment.id);
-                                    commentsContainer.innerHTML += `
-                                        <li>
-                                            <div class="comment-content">
-                                                <span class="username">${comment.user.username}:</span> 
-                                                <span class="comment-text">${comment.isi_komentar}</span>
+        var commentsContainer = document.getElementById('comments-container');
+        if (commentsContainer) {
+            if (fotoId !== null && fotoId !== undefined && fotoId !== "") {
+                fetch('/get-comments?foto_id=' + fotoId)
+                    .then(response => response.json())
+                    .then(data => {
+                        commentsContainer.innerHTML = '';
+                        if (data.comments.length > 0) {
+                            data.comments.forEach(comment => {
+                                console.log('Comment ID:', comment.id);
+                                var replyText = comment.is_reply ? 'Membalas ' + comment.reply_to.username + ': ' : '';
+                                commentsContainer.innerHTML += `
+                                    <li class="${comment.is_reply ? 'reply' : 'comment'}">
+                                        <!-- Konten Komentar atau Balasan -->
+                                        <div class="comment-content">
+                                            <span class="username">${comment.user.username}:</span> 
+                                            <span class="comment-text">${replyText}${comment.isi_komentar}</span>
+                                        </div>
+                                        
+                                        <!-- Tombol Reply dan Form Reply -->
+                                        <a href="#" class="reply-link" onclick="openReplyModal('${fotoId}', '${comment.id}', '${comment.user.username}')">Reply</a>
+                                        <div id="reply-form-${comment.id}" class="reply-form" style="display: none;">
+                                            <input type="text" id="reply-input-${comment.id}" class="reply-input" placeholder="Your reply">
+                                            <div class="reply-buttons">
+                                                <button onclick="submitReply('${fotoId}', '${comment.id}', document.getElementById('reply-input-${comment.id}').value)"><i class="far fa-paper-plane"></i></button>
+                                                <button onclick="cancelReply('${comment.id}')" class="cancel">Cancel</button>
                                             </div>
-                                            <a href="#" class="reply-link" onclick="openReplyModal('${fotoId}', '${comment.id}', '${comment.user.username}')">Reply</a>
-                                            <div id="reply-form-${comment.id}" class="reply-form" style="display: none;">
-                                                <input type="text" id="reply-input-${comment.id}" class="reply-input" placeholder="Your reply">
-                                                <div class="reply-buttons">
-                                                    <button onclick="submitReply('${fotoId}', '${comment.id}', document.getElementById('reply-input-${comment.id}').value)"><i class="far fa-paper-plane"></i></button>
-                                                    <button onclick="cancelReply('${comment.id}')" class="cancel">Cancel</button>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    `;
-                                });
-                            } else {
-                                commentsContainer.innerHTML = '<p>No comments for this photo.</p>';
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error fetching comments:', error);
-                        });
-                } else {
-                    commentsContainer.innerHTML = '<p>No comments for this photo.</p>';
-                }
+                                        </div>
+                                    </li>
+                                `;
+                            });
+                        } else {
+                            commentsContainer.innerHTML = '<p>No comments for this photo.</p>';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching comments:', error);
+                    });
+            } else {
+                commentsContainer.innerHTML = '<p>No comments for this photo.</p>';
             }
         }
+    }
 
         function openReplyModal(fotoId, commentId, username) {
             console.log('Opening reply modal for commentId:', commentId);
@@ -254,10 +258,13 @@
         function submitReply(fotoId, commentId, replyText) {
             var formData = new FormData();
             formData.append('foto_id', fotoId);
-            formData.append('comment_id', commentId);
             formData.append('reply_text', replyText);
             formData.append('user_id', '{{ Auth::id() }}');
             formData.append('tgl_komentar', new Date().toISOString());
+
+            if (commentId !== null && commentId !== undefined) {
+                formData.append('comment_id', commentId);
+            }
 
             fetch('/submit-reply', {
                 method: 'POST',

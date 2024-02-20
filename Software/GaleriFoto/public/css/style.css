@@ -137,6 +137,18 @@
   background-color: #f9f9f9;
 }
 
+/* Gaya untuk Komentar */
+.custom-ul .comment {
+  border-color: #42A5F5; /* Warna garis untuk komentar */
+}
+
+/* Gaya untuk Balasan Komentar */
+.custom-ul .reply {
+  border-color: #FFA726; /* Warna garis untuk balasan komentar */
+  margin-left: 20px; /* Atur jarak kiri untuk balasan komentar */
+}
+
+
 /* Mobile-specific styles */
 @media only screen and (max-width: 600px) {
   .komentar-container {
