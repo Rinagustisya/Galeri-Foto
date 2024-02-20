@@ -43,7 +43,7 @@ class KomenController extends Controller
     {
         try {
             $request->validate([
-                'reply' => 'required',
+                'reply_text' => 'required',
                 'tgl_komentar' => 'required',
                 'user_id' => 'required',
                 'foto_id' => 'nullable',
@@ -51,7 +51,7 @@ class KomenController extends Controller
 
             $fotoId = $request->filled('foto_id') ? $request->foto_id : null;
             KomentarFoto::create([
-                'isi_komentar' => $request->reply,
+                'isi_komentar' => $request->reply_text,
                 'tgl_komentar' => Carbon::now(),
                 'user_id' => Auth::id(),
                 'foto_id' => $fotoId

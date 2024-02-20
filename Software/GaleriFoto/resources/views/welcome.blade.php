@@ -189,87 +189,89 @@
     }
 
     function fetchComments(fotoId) {
-        var commentsContainer = document.getElementById('comments-container');
-        if (commentsContainer) {
-            if (fotoId !== null && fotoId !== undefined && fotoId !== "") {
-                fetch('/get-comments?foto_id=' + fotoId)
-                    .then(response => response.json())
-                    .then(data => {
-                        commentsContainer.innerHTML = '';
-                        if (data.comments.length > 0) {
-                            data.comments.forEach(comment => {
-                                commentsContainer.innerHTML += `
-                                    <li>
-                                        <div class="comment-content">
-                                            <span class="username">${comment.user.username}:</span> 
-                                            <span class="comment-text">${comment.isi_komentar}</span>
-                                        </div>
-                                        <a href="#" class="reply-link" onclick="openReplyModal('${fotoId}', '${comment.commentId}', '${comment.user.username}')">Reply</a>
-                                        <div id="reply-form-${comment.commentId}" class="reply-form" style="display: none;">
-                                            <input type="text" id="reply-input-${comment.commentId}" class="reply-input" placeholder="Your reply">
-                                            <div class="reply-buttons">
-                                                <button onclick="submitReply('${fotoId}', '${comment.commentId}')"><i class="far fa-paper-plane"></i></button>
-                                                <button onclick="cancelReply('${comment.commentId}')" class="cancel">Cancel</button>
+            var commentsContainer = document.getElementById('comments-container');
+            if (commentsContainer) {
+                if (fotoId !== null && fotoId !== undefined && fotoId !== "") {
+                    fetch('/get-comments?foto_id=' + fotoId)
+                        .then(response => response.json())
+                        .then(data => {
+                            commentsContainer.innerHTML = '';
+                            if (data.comments.length > 0) {
+                                data.comments.forEach(comment => {
+                                    console.log('Comment ID:', comment.id);
+                                    commentsContainer.innerHTML += `
+                                        <li>
+                                            <div class="comment-content">
+                                                <span class="username">${comment.user.username}:</span> 
+                                                <span class="comment-text">${comment.isi_komentar}</span>
                                             </div>
-                                        </div>
-                                    </li>
-                                `;
-                            });
-                        } else {
-                            commentsContainer.innerHTML = '<p>No comments for this photo.</p>';
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error fetching comments:', error);
-                    });
+                                            <a href="#" class="reply-link" onclick="openReplyModal('${fotoId}', '${comment.id}', '${comment.user.username}')">Reply</a>
+                                            <div id="reply-form-${comment.id}" class="reply-form" style="display: none;">
+                                                <input type="text" id="reply-input-${comment.id}" class="reply-input" placeholder="Your reply">
+                                                <div class="reply-buttons">
+                                                    <button onclick="submitReply('${fotoId}', '${comment.id}', document.getElementById('reply-input-${comment.id}').value)"><i class="far fa-paper-plane"></i></button>
+                                                    <button onclick="cancelReply('${comment.id}')" class="cancel">Cancel</button>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    `;
+                                });
+                            } else {
+                                commentsContainer.innerHTML = '<p>No comments for this photo.</p>';
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error fetching comments:', error);
+                        });
+                } else {
+                    commentsContainer.innerHTML = '<p>No comments for this photo.</p>';
+                }
+            }
+        }
+
+        function openReplyModal(fotoId, commentId, username) {
+            console.log('Opening reply modal for commentId:', commentId);
+
+            var replyForm = document.getElementById('reply-form-' + commentId);
+            if (replyForm) {
+                replyForm.style.display = 'block';
+                var replyInput = document.getElementById('reply-input-' + commentId);
+                if (replyInput) {
+                    replyInput.placeholder = 'Reply to ' + username + '...';
+                }
             } else {
-                commentsContainer.innerHTML = '<p>No comments for this photo.</p>';
+                console.error('Reply form not found for commentId:', commentId);
             }
         }
-    }
 
-    function openReplyModal(fotoId, commentId, username) {
-        var replyForm = document.getElementById('reply-form-' + commentId);
-        if (replyForm) {
-            replyForm.style.display = 'block';
-            var replyInput = document.getElementById('reply-input-' + commentId);
-            if (replyInput) {
-                replyInput.placeholder = 'Reply to ' + username + '...';
+        function cancelReply(commentId) {
+            var replyForm = document.getElementById('reply-form-' + commentId);
+            if (replyForm) {
+                replyForm.style.display = 'none';
             }
         }
-    }
 
-    function cancelReply(commentId) {
-        var replyForm = document.getElementById('reply-form-' + commentId);
-        if (replyForm) {
-            replyForm.style.display = 'none';
-        }
-    }
+        function submitReply(fotoId, commentId, replyText) {
+            var formData = new FormData();
+            formData.append('foto_id', fotoId);
+            formData.append('comment_id', commentId);
+            formData.append('reply_text', replyText);
+            formData.append('user_id', '{{ Auth::id() }}');
+            formData.append('tgl_komentar', new Date().toISOString());
 
-    function submitReply(fotoId, co bmmentId) {
-        var replyInput = document.getElementById('reply-input-' + commentId);
-        if (replyInput && replyInput.value.trim() !== "") {
             fetch('/submit-reply', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        foto_id: fotoId,
-                        comment_id: commentId,
-                        reply: replyInput.value.trim(),
-                        tgl_komentar: new Date().toISOString(),
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    fetchComments(fotoId);
-                })
-                .catch(error => {
-                    console.error('Error submitting reply:', error);
-                });
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Reply submitted successfully:', data);
+                fetchComments(fotoId);
+            })
+            .catch(error => {
+                console.error('Error submitting reply:', error);
+            });
         }
-    }
 
     document.addEventListener('DOMContentLoaded', function(event) {
         @auth
@@ -367,7 +369,6 @@
             modalContent.style.maxHeight = modalHeight + 'px';
         }
     });
-
 </script>
 @endpush
 
