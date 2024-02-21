@@ -221,6 +221,8 @@
           icon: 'success',
           title: 'Berhasil!',
           text: 'Anda Berhasil Registrasi. Silahkan login!',
+        }).then(function () {
+          window.location.href = "{{ route('login.show') }}";
         });
       },
       error: function (xhr, status, error) {
