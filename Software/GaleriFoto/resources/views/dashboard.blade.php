@@ -17,7 +17,7 @@
                     @if(count($fotos) > 0)
                         @foreach($fotos as $foto)
                             <div class="col-md-2 mb-3">
-                                <div class="card" style="width: 100%; background-color: #BFACE2; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);">
+                                <div class="card" style="width: 100%; background-color: #EBE9F6; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);">
                                     <img src="{{ route('foto.saya', ['filename' => basename($foto->lokasi_file)]) }}" alt="gambar" class="card-img-top mx-auto my-3 mb-3 " style="width: 80px; height: 80px;">
                                     <div class="card-footer text-center">
                                         <p class="card-text">{{ $foto->judul_foto }}</p>

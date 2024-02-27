@@ -146,4 +146,19 @@
         }
     });
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var errorMessage = "{{ $errors->first() }}";
+        
+        if (errorMessage) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: errorMessage
+            });
+        }
+    });
+</script>
 @endpush

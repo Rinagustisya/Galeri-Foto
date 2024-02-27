@@ -1,6 +1,6 @@
 .jumbotron {
   padding-top: 6rem;
-  background-color: #BFACE2;
+  background-color: #EBE9F6;
 }
 .nav-link {
   font-family: 'Poppins';
@@ -102,6 +102,13 @@
   transform: translate(-50%, -50%);
 }
 
+.modal-content-delete{
+  background-color: #fefefe;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid#888;
+  width: 80%;
+}
 .close {
   position: absolute;
   top: 10px;
