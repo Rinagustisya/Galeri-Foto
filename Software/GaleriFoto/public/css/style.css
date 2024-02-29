@@ -89,7 +89,14 @@
   background-color: rgba(0, 0, 0, 0.4);
 }
 
-.modal-content {
+.modal-content{
+  background-color: #fefefe;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+.modal-content-list {
   background-color: #fefefe;
   padding: 20px;
   border: 1px solid #888;
@@ -101,13 +108,17 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
-
-.modal-content-delete{
+.modal-content-comment {
   background-color: #fefefe;
-  margin: 10% auto;
   padding: 20px;
-  border: 1px solid#888;
+  border: 1px solid #888;
   width: 80%;
+  max-width: 600px;
+  border-radius: 10px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 .close {
   position: absolute;

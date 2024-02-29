@@ -1,6 +1,6 @@
 <div class="modal fade" id="ModalDelete" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
-    <form class="modal-content-delete" method="POST" id="deleteForm">
+    <form class="modal-content" method="POST" id="deleteForm">
       @method('delete')
       @csrf <!-- Include the CSRF token here -->
       

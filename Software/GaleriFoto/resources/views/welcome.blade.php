@@ -100,7 +100,7 @@
 
 <!-- modal -->
 <div class="comment-modal" id="commentModal">
-    <div class="modal-content small-modal">
+    <div class="modal-content-comment small-modal">
         <span class="close" onclick="closeCommentModal()">&times;</span>
         <h4>Comment on Photo</h4>
         <div id="container" class="custom-margin">
@@ -129,7 +129,7 @@
 
 <!-- daftar komentar -->
 <div class="comment-list-modal" id="commentListModal">
-    <div class="modal-content small-modal">
+    <div class="modal-content-list small-modal">
         <span class="close" onclick="closeCommentListModal()">&times;</span>
         <div id="listContainer" class="custom-margin">
             <div class="komentar-container">
