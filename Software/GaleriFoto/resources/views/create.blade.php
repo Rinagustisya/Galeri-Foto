@@ -104,6 +104,7 @@
                            <div class="card-body">
                                  <label for="lokasi_file">Upload Foto <i class="fas fa-upload"></i></label>
                                  <input type="file" name="lokasi_file" id="lokasi_file" class="form-control">
+                                 <small style="color : red;">Format File : jpeg,png,jpg,gif</small>
                            </div>
                         </div>
                      </div>
